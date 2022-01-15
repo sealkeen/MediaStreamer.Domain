@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<!--EntityType.csproj-->
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.1; netstandard2.1; netstandard2.0; net40; net45</TargetFrameworks>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+	  <DefineConstants>TRACE;USE_SQL_SERVER</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	<ProjectReference Include="..\MediaStreamer.Exceptions\MediaStreamer.Exceptions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup><!--<add assembly="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />-->
+	
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+	  <PackageReference Include="Microsoft.Bcl" Version="1.1.10" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+	  <PackageReference Include="System.ComponentModel.Annotations">
+	    <Version>5.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+	  <PackageReference Include="System.ComponentModel.Annotations">
+	    <Version>5.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	  <PackageReference Include="System.ComponentModel.Annotations">
+	    <Version>5.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+	  <PackageReference Include="System.ComponentModel.Annotations">
+	    <Version>5.0.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+</Project>

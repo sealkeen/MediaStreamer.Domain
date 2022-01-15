@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D411BDA6-9F19-4FE9-ADF9-92B38FB31AB3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MediaStreamer.Domain.Net40.VS2010</RootNamespace>
+    <AssemblyName>MediaStreamer.Domain.Net40.VS2010</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBRepository.cs" />
+    <Compile Include="IAlbum.cs" />
+    <Compile Include="IArtist.cs" />
+    <Compile Include="IComposition.cs" />
+    <Compile Include="ICompositionInstance.cs" />
+    <Compile Include="IDMDBAccess.cs" />
+    <Compile Include="IDMDBContext.cs" />
+    <Compile Include="ListICompositionExtension.cs" />
+    <Compile Include="MediaEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Administrator.cs" />
+    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\AlbumGenre.cs" />
+    <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\ArtistGenre.cs" />
+    <Compile Include="Models\Composition.cs" />
+    <Compile Include="Models\CompositionVideo.cs" />
+    <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\GroupMember.cs" />
+    <Compile Include="Models\GroupRole.cs" />
+    <Compile Include="Models\ListenedAlbum.cs" />
+    <Compile Include="Models\ListenedArtist.cs" />
+    <Compile Include="Models\ListenedComposition.cs" />
+    <Compile Include="Models\ListenedGenre.cs" />
+    <Compile Include="Models\Moderator.cs" />
+    <Compile Include="Models\Musician.cs" />
+    <Compile Include="Models\MusicianRole.cs" />
+    <Compile Include="Models\Picture.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Video.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
