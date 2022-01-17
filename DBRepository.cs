@@ -320,7 +320,7 @@ namespace MediaStreamer.Domain
                 if (genre == null)
                     AddNewUnknownGenreToArtist(artistName);
                 var artAlbs = foundArtist.Albums;
-                if (foundAlbum == null)
+                if (foundAlbum == null && artAlbs.Count() == 0)
                 {
                     if(string.IsNullOrEmpty(albumName) || albumName.ToLower().Trim() == "unknown")
                         albumName = AddNewUnknownAlbum(foundArtist, genre).AlbumName;
@@ -344,12 +344,16 @@ namespace MediaStreamer.Domain
                 else
                     targetGM = GMmatches.First();
 
+                //var albAr = 
+
                 var alb = new Album()
                 {
                     AlbumID = GetNewAlbumID(),
                     Artist = foundArtist,
                     ArtistID = foundArtist.ArtistID,
                     AlbumName = albumName,
+                    Genre = genre,
+                    GenreID = genre.GenreID,
                     //ArtistName = targetArtist.ArtistName,
                     GroupFormationDate = targetGM.GroupFormationDate,
                     GroupMember = targetGM,
