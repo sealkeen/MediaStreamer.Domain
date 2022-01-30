@@ -33,7 +33,7 @@ namespace MediaStreamer.Domain
 #endif
         public string CompositionName { get; set; }
         public Nullable<long> ArtistID { get; set; }
-        public Nullable<System.DateTime> GroupFormationDate { get; set; }
+        //public Nullable<System.DateTime> GroupFormationDate { get; set; }
         public Nullable<long> AlbumID { get; set; }
         public Nullable<long> Duration { get; set; }
 
@@ -53,7 +53,7 @@ namespace MediaStreamer.Domain
     
         public virtual Album Album { get; set; }
         public virtual Artist Artist { get; set; }
-        public virtual GroupMember GroupMember { get; set; }
+        //public virtual GroupMember GroupMember { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }

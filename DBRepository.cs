@@ -569,7 +569,7 @@ namespace MediaStreamer.Domain
             {
                 ArtistID = targetArtist.ArtistID,
                 //ArtistName = targetArtist.ArtistName,
-                GroupFormationDate = targetGM.GroupFormationDate,
+                //GroupFormationDate = targetGM.GroupFormationDate,
                 CompositionName = compositionName,
                 Duration = duration,
                 FilePath = filePath,
@@ -1033,7 +1033,7 @@ namespace MediaStreamer.Domain
                 //*public long*/ 
                 var ArtistID = composition.ArtistID;
                 //*public System.DateTime*/ 
-                var GroupFormationDate = composition.GroupFormationDate;
+                //var GroupFormationDate = composition.GroupFormationDate;
                 //*public long*/ 
                 var AlbumID = composition.AlbumID;
                 //*public long*/ 
@@ -1048,8 +1048,8 @@ namespace MediaStreamer.Domain
                     Composition = composition,
                     CompositionID = composition.CompositionID,
                     CountOfPlays = 1,
-                    GroupFormationDate = composition.GroupFormationDate == null ? DateTime.MinValue : composition.GroupFormationDate.Value,
-                    GroupMember = composition.GroupMember,
+                    //GroupFormationDate = composition.GroupFormationDate == null ? DateTime.MinValue : composition.GroupFormationDate.Value,
+                    //GroupMember = composition.GroupMember,
                     ListenDate = DateTime.Now,
                     User = user,
                     UserID = user.UserID
