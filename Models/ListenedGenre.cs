@@ -19,13 +19,12 @@ namespace MediaStreamer.Domain
     {
         public Nullable<long> CountOfPlays { get; set; }
         public long UserID { get; set; }
+        public long GenreID { get; set; }
 #if !NET40
         [StringLength(50)]
-#endif
-
-        public long GenreID { get; set; }
+#endif        
         public string GenreName { get; set; }
-    
+
         public virtual Genre Genre { get; set; }
         public virtual User User { get; set; }
     }
