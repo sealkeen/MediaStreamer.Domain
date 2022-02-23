@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaStreamer.Domain", "MediaStreamer.Domain.csproj", "{904A2A2C-4ABC-4629-846A-4F696AA0E8AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPAM.CSCourse2016.JSONParser.Library", "C:\Users\Sealkeen\Documents\VCSharp\EPAM\SealkeenJSON\EPAM.CSCourse2016.JSONParser.Core\EPAM.CSCourse2016.JSONParser.Library.csproj", "{5788756D-50E6-4DFB-BBC9-6613E855E7F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaStreamer.DataAccess.CrossPlatform", "..\MediaStreamer.DataAccess.CrossPlatform\MediaStreamer.DataAccess.CrossPlatform.csproj", "{78FD49F0-C014-43EE-B6BE-8DC9EC685993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaStreamer.DataAccess.CrossPlatform.UnitTest", "..\MediaStreamer.DataAccess.CrossPlatform.UnitTest\MediaStreamer.DataAccess.CrossPlatform.UnitTest.csproj", "{91875F1E-06A7-4250-A638-CB5D0C2B680B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{904A2A2C-4ABC-4629-846A-4F696AA0E8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{904A2A2C-4ABC-4629-846A-4F696AA0E8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{904A2A2C-4ABC-4629-846A-4F696AA0E8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{904A2A2C-4ABC-4629-846A-4F696AA0E8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5788756D-50E6-4DFB-BBC9-6613E855E7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5788756D-50E6-4DFB-BBC9-6613E855E7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5788756D-50E6-4DFB-BBC9-6613E855E7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5788756D-50E6-4DFB-BBC9-6613E855E7F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78FD49F0-C014-43EE-B6BE-8DC9EC685993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78FD49F0-C014-43EE-B6BE-8DC9EC685993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78FD49F0-C014-43EE-B6BE-8DC9EC685993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78FD49F0-C014-43EE-B6BE-8DC9EC685993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91875F1E-06A7-4250-A638-CB5D0C2B680B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91875F1E-06A7-4250-A638-CB5D0C2B680B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91875F1E-06A7-4250-A638-CB5D0C2B680B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91875F1E-06A7-4250-A638-CB5D0C2B680B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7E16C1E-87C6-4E12-AE95-F6D96E5F7E9F}
+	EndGlobalSection
+EndGlobal
