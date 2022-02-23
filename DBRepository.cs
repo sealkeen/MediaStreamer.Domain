@@ -117,33 +117,6 @@ namespace MediaStreamer.Domain
                 if(errorAction != null) errorAction.Invoke(ex.Message);
             }
         }
-        public void RemoveGroupMember(string artistName, long formationDate,
-            long? dateOfDisband = null)
-        {
-            //var q = from artist in DB.GetArtists() where artist.ArtistName == artistName select artist;
-            //if (q.Count() == 0)
-            //    return;
-            //var art = q.First();
-            //var member = new GroupMember() {
-            //    Artist = art,
-            //    ArtistName = art.ArtistName,
-            //    ArtistID = art.ArtistID,
-            //    DateOfDisband = dateOfDisband,
-            //    GroupFormationDate = formationDate
-            //};
-            var artists = from a in DB.GetArtists() where a.ArtistName == artistName select a;
-
-            if (artists == null || artists.Count() == 0)
-                return;
-            long artistID = artists.First().ArtistID;
-
-            //TODO:
-            //var queue = DB.GetGroupMembers().Where(x => x.ArtistID == artistID && x.GroupFormationDate == formationDate);
-
-            //var gM = DB.GetGroupMembers().Find(artistID, formationDate);
-            //if (gM != null)
-            //    DB.GetGroupMembers().Remove(gM);
-        }
 
         public DateTime GetNewGroupFormationDate()
         {
@@ -653,7 +626,7 @@ namespace MediaStreamer.Domain
             return false;
         }
 
-        public void AddArtistGenre(string artistName, string genreName,
+        public ArtistGenre AddArtistGenre(string artistName, string genreName,
             long? dateOfDisband = null, Action<string> errorAction = null
         )
         {
@@ -662,14 +635,14 @@ namespace MediaStreamer.Domain
                 if (genreName == null || genreName == string.Empty)
                 {
                     if(errorAction != null) errorAction.Invoke("AddArtistGenre exception : genreName == null");
-                    return;
+                    return null;
                 }
                 var firstArtist = GetFirstArtistIfExists(artistName);
 
                 if (firstArtist == null)
                 {
                     if(errorAction != null) errorAction.Invoke("AddArtistGenre exception : no matching artist exist <"+artistName+">.");
-                    return;
+                    return null;
                 }
 
                 var newAGenre = new ArtistGenre() { GenreName = genreName };
@@ -684,11 +657,12 @@ namespace MediaStreamer.Domain
                 //GetFirstArtistIfExists(firstArtist.ArtistName).ArtistGenres.Add(newAGenre);
                 DB.Add(newAGenre); 
                 DB.SaveChanges();
-                return;
+                return newAGenre;
             }
             catch (Exception ex)
             {
                 if(errorAction != null) errorAction.Invoke(ex.Message);
+                return null;
             }
         }
 
@@ -859,16 +833,8 @@ namespace MediaStreamer.Domain
         }
 
         /// <summary>
-        /// This method removes the existing composition and add a new one for its place
+        /// This method changes the existing composition if it exists
         /// </summary>
-        /// <param name="artist"></param>
-        /// <param name="album"></param>
-        /// <param name="title"></param>
-        /// <param name="duration"></param>
-        /// <param name="fileName"></param>
-        /// <param name="yearFromFile"></param>
-        /// <param name="onlyReturnNoAppend"></param>
-        /// <returns></returns>
         public Composition AddComposition(Artist artist, Album album,
             string title, TimeSpan duration,
             string fileName, long? yearFromFile = null,
@@ -891,8 +857,6 @@ namespace MediaStreamer.Domain
                         onlyReturnNoAppend, newComposition, existingComp, errorAction);
                     return existingComp;
                 }
-                //cmp.AlbumName = alm.AlbumName;
-                //cmp.ArtistName = art.ArtistName;
 
                 if (title != null)
                 {
