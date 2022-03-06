@@ -174,6 +174,10 @@ namespace MediaStreamer.Domain
             //var genre = GetFirstGenreIfExistsByArtist(artistName);
 
             var artist = GetFirstArtistIfExists(artistName);
+            if (artist == null)
+            {
+                artist = AddArtist(artistName);
+            }
             return AddGenreToArtist(artist, "unknown");
         }
 
@@ -193,8 +197,9 @@ namespace MediaStreamer.Domain
                 genre = AddNewUnknownGenreToArtist(artist.ArtistName); //TODO: gFD = null handle
 
             var unknownAlbums = from unknownAlbum in DB.GetAlbums()
+                                join art in DB.GetArtists() on unknownAlbum.ArtistID equals art.ArtistID
                                 where unknownAlbum.AlbumName == "unknown" &&
-                                unknownAlbum.Artist.ArtistID == artist.ArtistID
+                                art.ArtistID == artist.ArtistID
                                 select unknownAlbum;
 
             if (unknownAlbums.Count() == 0)
@@ -215,7 +220,7 @@ namespace MediaStreamer.Domain
                     Type = type,
                     Year = year
                 };
-                DB.Add(albumToAdd);
+                DB.AddEntity(albumToAdd);
                 DB.SaveChanges();
             }
             else
@@ -253,7 +258,7 @@ namespace MediaStreamer.Domain
                         ArtistID = (artist.ArtistID), AlbumID = GetNewAlbumID()
                     };
                     try {
-                        DB.Add(albumToAdd);
+                        DB.AddEntity(albumToAdd);
                         DB.SaveChanges();
                     } catch (Exception ex) {
                         Debug.WriteLine(ex.Message);
@@ -292,30 +297,28 @@ namespace MediaStreamer.Domain
                 var genre = GetLastGenreIfExistsByArtist(artistName);
                 if (genre == null)
                     AddNewUnknownGenreToArtist(artistName);
-                var artAlbs = foundArtist.Albums;
-                if (foundAlbum == null && artAlbs.Count() == 0)
+                //var artAlbs = foundArtist.Albums;
+                if (foundAlbum == null /*&& artAlbs.Count() == 0*/)
                 {
                     if(string.IsNullOrEmpty(albumName) || albumName.ToLower().Trim() == "unknown")
                         albumName = AddNewUnknownAlbum(foundArtist, genre).AlbumName;
                 } 
-                else if (artAlbs.Count() != 0 && foundAlbum.AlbumName.ToLower().Trim() == albumName.ToLower().Trim())
+                else if (/*artAlbs.Count() != 0 &&*/ foundAlbum.AlbumName.ToLower().Trim() == albumName.ToLower().Trim())
                 {
-                    return artAlbs.First();
-                    var targetAlbums = artAlbs.Where(a => a.AlbumName.ToLower() == albumName.ToLower());
-                    if (targetAlbums.Count() != 0)
-                    {
-                        DB.UpdateAndSaveChanges(targetAlbums.First());
-                    }
+                    return foundAlbum;//artAlbs.First();
+                    //var targetAlbums = artAlbs.Where(a => a.AlbumName.ToLower() == albumName.ToLower());
+                    //if (targetAlbums.Count() != 0)
+                    //{
+                    //    DB.UpdateAndSaveChanges(targetAlbums.First());
+                    //}
                 }
 
                 var GMmatches = GetPossibleGroupMembers(artistName);
-                GroupMember targetGM;
-                if (GMmatches.Count() == 0)
-                {
+                GroupMember targetGM = null;
+                if (GMmatches?.Count() == 0)
                     targetGM = AddGroupMember(foundArtist.ArtistName, DateTime.MinValue, null);
-                }
                 else
-                    targetGM = GMmatches.First();
+                    targetGM = GMmatches?.First();
 
                 //var albAr = 
 
@@ -323,19 +326,19 @@ namespace MediaStreamer.Domain
                 {
                     AlbumID = GetNewAlbumID(),
                     Artist = foundArtist,
-                    ArtistID = foundArtist.ArtistID,
+                    ArtistID = foundArtist?.ArtistID,
                     AlbumName = albumName,
                     Genre = genre,
-                    GenreID = genre.GenreID,
+                    GenreID = genre != null? genre.GenreID : int.MaxValue,
                     //ArtistName = targetArtist.ArtistName,
-                    GroupFormationDate = targetGM.GroupFormationDate,
+                    GroupFormationDate = targetGM?.GroupFormationDate,
                     GroupMember = targetGM,
                     Label = label,
                     Type = type,
                     Year = year
                 };
 
-                DB.Add(alb);
+                DB.AddEntity(alb);
                 DB.SaveChanges();
                 return alb;
             }
@@ -352,15 +355,9 @@ namespace MediaStreamer.Domain
 
             var albG = new AlbumGenre()
             {
-                Album = album,
-                Genre = genre,
-                Artist = artist,
                 AlbumID = album.AlbumID,
                 ArtistID = artist.ArtistID,
-                GenreName = genre.GenreName,
-                DateOfApplication = DateTime.Now,
-                GroupFormationDate = groupMember.GroupFormationDate,
-                GroupMember = groupMember
+                GenreID = genre.GenreID
             };
 
             if (album.AlbumGenres == null)
@@ -419,12 +416,17 @@ namespace MediaStreamer.Domain
         /// <returns></returns>
         public Genre GetLastGenreIfExistsByArtist(string artistName)
         {
-            var genreMatches = GetPossibleGenresByArtistName(artistName);
+            try
+            {
+                var genreMatches = GetPossibleGenresByArtistName(artistName);
 
-            if (genreMatches.Count() == 0)
+                if (genreMatches.Count() == 0)
+                    return null;
+
+                return genreMatches.OrderBy(g => g.GenreID).Last();
+            } catch (NullReferenceException) {
                 return null;
-
-            return genreMatches.OrderBy(g=>g.GenreID).Last();
+            }
         }
 
         public ArtistGenre GetFirstArtistGenreIfExists(long artistID, long genreID)
@@ -462,7 +464,8 @@ namespace MediaStreamer.Domain
         public AlbumGenre GetFirstAlbumGenreIfExists(Artist artist, Album album)
         {
             var matches = from AlbumGenre ag in DB.GetAlbumGenres()
-                          where ag.Album.AlbumID == album.AlbumID
+                          join alb in DB.GetAlbums() on ag.AlbumID equals alb.AlbumID
+                          where alb.AlbumID == album.AlbumID
                           select ag;
             if (matches.Count() > 0)
                 return matches.First();
@@ -494,7 +497,7 @@ namespace MediaStreamer.Domain
                 try
                 {
                     art.ArtistName = artistName;
-                    DB.Add(art);
+                    DB.AddEntity(art);
                     DB.SaveChanges();
                     artistMatches = GetPossibleArtists(artistName);
                 }
@@ -514,7 +517,7 @@ namespace MediaStreamer.Domain
                     var gM = new GroupMember();
                     gM.ArtistID = GetFirstArtistIfExists(artistName).ArtistID;
                     //gM.ArtistName = artistName;
-                    DB.Add(gM);
+                    DB.AddEntity(gM);
                     DB.SaveChanges();
                     GMmatches = GetPossibleGroupMembers(artistName);
                 }
@@ -550,7 +553,7 @@ namespace MediaStreamer.Domain
                 //Artist = art,
             };
 
-            DB.Add(cmp);
+            DB.AddEntity(cmp);
         }
 
         public IQueryable<Artist> GetPossibleArtists(string name)
@@ -571,10 +574,12 @@ namespace MediaStreamer.Domain
         public IQueryable<Genre> GetPossibleGenresByArtistName(string artistName)
         {
             var matches = from match in DB.GetArtistGenres()
-                          where (match.Artist.ArtistName == artistName)
-                          select match;
+                          join art in DB.GetArtists() on match.ArtistID equals art.ArtistID
+                          join gen in DB.GetGenres() on match.GenreID equals gen.GenreID
+                          where (art.ArtistName == artistName)
+                          select gen;
 
-            return matches.Select(m => m.Genre);
+            return matches;
         }
 
         public IQueryable<Album> GetPossibleAlbums(long artistID, string albumName)
@@ -655,7 +660,7 @@ namespace MediaStreamer.Domain
                     newAGenre.Genre = new Genre { GenreName = genreName };
 
                 //GetFirstArtistIfExists(firstArtist.ArtistName).ArtistGenres.Add(newAGenre);
-                DB.Add(newAGenre); 
+                DB.AddEntity(newAGenre); 
                 DB.SaveChanges();
                 return newAGenre;
             }
@@ -709,7 +714,7 @@ namespace MediaStreamer.Domain
                     artistToAdd = GetFirstArtistIfExists("unknown");
                     if (artistToAdd == null)
                     {
-                        DB.Add(artistToAdd = new Artist() { ArtistName = "unknown", ArtistID = GetNewArtistID() });
+                        DB.AddEntity(artistToAdd = new Artist() { ArtistName = "unknown", ArtistID = GetNewArtistID() });
                     }
                     return artistToAdd;
                 }
@@ -727,7 +732,7 @@ namespace MediaStreamer.Domain
                         //return null;
                     }
 
-                    DB.Add(artistToAdd);
+                    DB.AddEntity(artistToAdd);
                     DB.SaveChanges();
                 }
 
@@ -762,7 +767,7 @@ namespace MediaStreamer.Domain
                 genre = new Genre() { GenreName = newGenre };
                 try
                 {
-                    DB.Add(genre);
+                    DB.AddEntity(genre);
                     DB.SaveChanges();
                     genre = DB.GetGenres().Where(g => g.GenreName == newGenre).First();
                     return;
@@ -787,14 +792,15 @@ namespace MediaStreamer.Domain
                     ArtistID = artist.ArtistID,
                     DateOfApplication = DateTime.Now,
                     Genre = genre,
-                    GenreName = genre.GenreName
+                    GenreName = genre.GenreName,
+                    GenreID = genre.GenreID
                 };
 
                 var existingAG = FindArtistGenreOrReturnNull(artist.ArtistID, genre.GenreName);
                 if (existingAG == null)
                 {
                     try {
-                        DB.Add(artG);
+                        DB.AddEntity(artG);
                         DB.SaveChanges();
                     }
                     catch (Exception ex) {
@@ -845,9 +851,11 @@ namespace MediaStreamer.Domain
             {
                 var newComposition = new Composition();
                 var existing = from comp in DB.GetCompositions()
-                               where (comp.CompositionName == title) &&
-                               (comp.Album.AlbumName == album.AlbumName) &&
-                               (comp.Artist.ArtistName == artist.ArtistName)
+                               join alb in DB.GetAlbums() on comp.AlbumID equals alb.AlbumID
+                               join art in DB.GetArtists() on comp.ArtistID equals art.ArtistID
+                               where comp.CompositionName == title 
+                               && alb.AlbumName == album.AlbumName 
+                               && art.ArtistName == artist.ArtistName
                                select comp;
 
                 if (existing.Count() != 0)
@@ -864,8 +872,8 @@ namespace MediaStreamer.Domain
                     {
                         newComposition.CompositionID = GetNewCompositionID();
                         newComposition.CompositionName = title;
-                        newComposition.ArtistID = artist.ArtistID;
-                        newComposition.AlbumID = album.AlbumID;
+                        newComposition.ArtistID = artist?.ArtistID;
+                        newComposition.AlbumID = album?.AlbumID;
                         newComposition.Album = album;
                         newComposition.Artist = artist;
 
@@ -879,7 +887,7 @@ namespace MediaStreamer.Domain
                             //leave them null
                         }
 
-                        DB.Add(newComposition);
+                        DB.AddEntity(newComposition);
                         DB.SaveChanges();
                         return newComposition;
                     }
@@ -1019,7 +1027,7 @@ namespace MediaStreamer.Domain
                     UserID = user.UserID
                 };
 
-                DB.Add(lC);
+                DB.AddEntity(lC);
                 DB.SaveChanges();
             }
             catch (Exception ex)
@@ -1113,7 +1121,7 @@ namespace MediaStreamer.Domain
                 user.FaceBookLink = "null";
                 user.UserID = id;
 
-                DB.Add(user);
+                DB.AddEntity(user);
                 DB.SaveChanges();
                 return user;
             }
@@ -1142,7 +1150,7 @@ namespace MediaStreamer.Domain
                 moderator.UserID = userID;
                 moderator.ModeratorID = GetNewModeratorID();
 
-                DB.Add(moderator);
+                DB.AddEntity(moderator);
                 DB.SaveChanges();
                 return moderator;
             }
@@ -1177,7 +1185,7 @@ namespace MediaStreamer.Domain
                 administrator.ModeratorID = moderID;
                 administrator.AdministratorID = GetNewAdministratorID();
 
-                DB.Add(administrator);
+                DB.AddEntity(administrator);
                 DB.SaveChanges();
                 return administrator;
             }
