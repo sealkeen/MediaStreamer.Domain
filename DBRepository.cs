@@ -29,7 +29,7 @@ namespace MediaStreamer.Domain
 
         public long GetNewCompositionID()
         {
-            if (DB.GetCompositions().Count() > 0)
+            if (DB.GetCompositions().Any())
                 return DB.GetCompositions().Max(c => c.CompositionID) + 1;
             else
                 return 1;
@@ -37,7 +37,7 @@ namespace MediaStreamer.Domain
 
         public long GetNewArtistID()
         {
-            if (DB.GetArtists().Count() > 0)
+            if (DB.GetArtists().Any())
                 return (DB.GetArtists().Max(a => a.ArtistID) + 1);
             else
                 return 1;
@@ -45,7 +45,7 @@ namespace MediaStreamer.Domain
 
         public long GetNewAlbumID()
         {
-            if (DB.GetAlbums().Count() > 0)
+            if (DB.GetAlbums().Any())
                 return (DB.GetAlbums().Max(a => a.AlbumID) + 1);
             else
                 return 1;
@@ -53,7 +53,7 @@ namespace MediaStreamer.Domain
 
         public long GetNewModeratorID()
         {
-            if (DB.GetModerators().Count() > 0)
+            if (DB.GetModerators().Any())
                 return (DB.GetModerators().Max(a => a.ModeratorID) + 1);
             else
                 return 1;
@@ -61,7 +61,7 @@ namespace MediaStreamer.Domain
 
         public long GetNewAdministratorID()
         {
-            if (DB.GetAdministrators().Count() > 0)
+            if (DB.GetAdministrators().Any())
                 return (DB.GetAdministrators().Max(a => a.AdministratorID) + 1);
             else
                 return 1;
@@ -145,13 +145,13 @@ namespace MediaStreamer.Domain
                            where gRM.GroupFormationDate == newFormationDate
                            select gRM;
 
-            if (existing.Count() != 0)
-                return existing.First();
+            if (existing != null && existing.Any())
+                return existing.FirstOrDefault();
 
             var artists = from artist in DB.GetArtists() where (artist.ArtistName == artistName) select artist;
-            if (artists.Count() != 0)
+            if (artists.Any())
             {
-                var firstArtist = artists.First();
+                var firstArtist = artists.FirstOrDefault();
                 var gM = new GroupMember()
                 {
                     //ArtistName = artistName,
@@ -225,7 +225,7 @@ namespace MediaStreamer.Domain
             }
             else
             {
-                albumToAdd = unknownAlbums.First();
+                albumToAdd = unknownAlbums.FirstOrDefault();
             }
             return albumToAdd;
         }
@@ -303,13 +303,13 @@ namespace MediaStreamer.Domain
                     if(string.IsNullOrEmpty(albumName) || albumName.ToLower().Trim() == "unknown")
                         albumName = AddNewUnknownAlbum(foundArtist, genre).AlbumName;
                 } 
-                else if (/*artAlbs.Count() != 0 &&*/ foundAlbum.AlbumName.ToLower().Trim() == albumName.ToLower().Trim())
+                else if (/*artAlbs.Any() &&*/ foundAlbum.AlbumName.ToLower().Trim() == albumName.ToLower().Trim())
                 {
-                    return foundAlbum;//artAlbs.First();
+                    return foundAlbum;//artAlbs.FirstOrDefault();
                     //var targetAlbums = artAlbs.Where(a => a.AlbumName.ToLower() == albumName.ToLower());
-                    //if (targetAlbums.Count() != 0)
+                    //if (targetAlbums.Any())
                     //{
-                    //    DB.UpdateAndSaveChanges(targetAlbums.First());
+                    //    DB.UpdateAndSaveChanges(targetAlbums.FirstOrDefault());
                     //}
                 }
 
@@ -318,7 +318,7 @@ namespace MediaStreamer.Domain
                 if (GMmatches?.Count() == 0)
                     targetGM = AddGroupMember(foundArtist.ArtistName, DateTime.MinValue, null);
                 else
-                    targetGM = GMmatches?.First();
+                    targetGM = GMmatches?.FirstOrDefault();
 
                 //var albAr = 
 
@@ -392,7 +392,7 @@ namespace MediaStreamer.Domain
 
             if (artistMatches.Count() == 0)
                 return null;
-            return artistMatches.First();
+            return artistMatches.FirstOrDefault();
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace MediaStreamer.Domain
 
             if (genreMatches.Count() == 0)
                 return null;
-            return genreMatches.First();
+            return genreMatches.FirstOrDefault();
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace MediaStreamer.Domain
 
             if (ags.Count() == 0)
                 return null;
-            return ags.First();
+            return ags.FirstOrDefault();
         }
 
         public Genre GetFirstGenreIfExistsByArtist(string artistName)
@@ -444,7 +444,7 @@ namespace MediaStreamer.Domain
 
             if (genreMatches.Count() == 0)
                 return null;
-            return genreMatches.First();
+            return genreMatches.FirstOrDefault();
         }
         /// <summary>
         /// Returns null if does not exist.
@@ -458,7 +458,7 @@ namespace MediaStreamer.Domain
 
             if (albumMatches.Count() == 0)
                 return null;
-            return albumMatches.First();
+            return albumMatches.FirstOrDefault();
         }
 
         public AlbumGenre GetFirstAlbumGenreIfExists(Artist artist, Album album)
@@ -467,8 +467,8 @@ namespace MediaStreamer.Domain
                           join alb in DB.GetAlbums() on ag.AlbumID equals alb.AlbumID
                           where alb.AlbumID == album.AlbumID
                           select ag;
-            if (matches.Count() > 0)
-                return matches.First();
+            if (matches.Any())
+                return matches.FirstOrDefault();
             return null;
 
         }
@@ -506,7 +506,7 @@ namespace MediaStreamer.Domain
                     return;
                 }
             }
-            var targetArtist = artistMatches.First();
+            var targetArtist = artistMatches.FirstOrDefault();
 
             var GMmatches = GetPossibleGroupMembers(artistName);
 
@@ -527,7 +527,7 @@ namespace MediaStreamer.Domain
                 }
             }
 
-            var targetGM = GMmatches.First();
+            var targetGM = GMmatches.FirstOrDefault();
 
             //Album alb = new Album() { ArtistID = targetArtist.ArtistID, AlbumName = albumName,
             //    ArtistName = artistName, GroupFormationDate = groupFormationDate, Label = label,
@@ -651,7 +651,7 @@ namespace MediaStreamer.Domain
                 }
 
                 var newAGenre = new ArtistGenre() { GenreName = genreName };
-                firstArtist = DB.GetArtists().First(x => x.ArtistID == firstArtist.ArtistID);
+                firstArtist = DB.GetArtists().FirstOrDefault(x => x.ArtistID == firstArtist.ArtistID);
                 //todo: check for changes
                 //newAGenre.Genre = DB.Genres.Find(genreName);
                 newAGenre.Genre = GetFirstGenreIfExists(genreName);
@@ -752,8 +752,8 @@ namespace MediaStreamer.Domain
                         where ag.ArtistID == artistID &&
                         ag.GenreName == genreName
                         select ag;
-            if (query.Count() > 0)
-                return query.First();
+            if (query.Any())
+                return query.FirstOrDefault();
             else
                 return null;
         }
@@ -769,7 +769,7 @@ namespace MediaStreamer.Domain
                 {
                     DB.AddEntity(genre);
                     DB.SaveChanges();
-                    genre = DB.GetGenres().Where(g => g.GenreName == newGenre).First();
+                    genre = DB.GetGenres().Where(g => g.GenreName == newGenre).FirstOrDefault();
                     return;
                 } catch { 
                 
@@ -858,9 +858,9 @@ namespace MediaStreamer.Domain
                                && art.ArtistName == artist.ArtistName
                                select comp;
 
-                if (existing.Count() != 0)
+                if (existing.Any())
                 {
-                    var existingComp = existing.First();
+                    var existingComp = existing.FirstOrDefault();
                     ChangeExistingComposition(artist, album, title, duration, fileName,
                         onlyReturnNoAppend, newComposition, existingComp, errorAction);
                     return existingComp;
@@ -982,7 +982,7 @@ namespace MediaStreamer.Domain
                           select lC;
             if (matches.Count() == 0)
                 return null;
-            return matches.First();
+            return matches.FirstOrDefault();
         }
 
         public void AddNewListenedComposition(Composition composition, User user,
@@ -993,9 +993,9 @@ namespace MediaStreamer.Domain
                 var existingComps = DB.GetListenedCompositions().Where(c => c.CompositionID == 
                 composition.CompositionID && user.UserID == c.UserID);
                 if (existingComps != null &&
-                    existingComps.Count() != 0)
+                    existingComps.Any())
                 {
-                    var last = existingComps.First();
+                    var last = existingComps.FirstOrDefault();
                     last.CountOfPlays += 1;
                     DB.SaveChanges();
                     return;
@@ -1055,7 +1055,7 @@ namespace MediaStreamer.Domain
                                  where a.UserID == user.UserID
                                  select u;
 
-                if (adminQuery.Count() > 0)
+                if (adminQuery.Any())
                 {
                     return true;
                 }
@@ -1079,7 +1079,7 @@ namespace MediaStreamer.Domain
                                  where m.UserID == user.UserID
                                  select u;
 
-                if (moderQuery.Count() > 0)
+                if (moderQuery.Any())
                 {
                     return true;
                 }
@@ -1137,13 +1137,13 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                var user = DB.GetUsers().First(u => u.UserID == userID);
+                var user = DB.GetUsers().FirstOrDefault(u => u.UserID == userID);
                 if (user == null)
                     return null;
                 var moders = DB.GetModerators().Where(m => m.UserID == userID);
-                if (moders.Count() != 0)
+                if (moders.Any())
                 {
-                    return moders.First();
+                    return moders.FirstOrDefault();
                 }
 
                 var moderator = new Moderator();
@@ -1166,18 +1166,18 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                var user = DB.GetUsers().First( x => x.UserID == userID);
+                var user = DB.GetUsers().FirstOrDefault( x => x.UserID == userID);
                 if (user == null)
                     return null;
 
-                var moders = DB.GetModerators().First(x => x.ModeratorID == moderID);
+                var moders = DB.GetModerators().FirstOrDefault(x => x.ModeratorID == moderID);
                 if (moders == null)
                     return null;
 
                 var admins = DB.GetAdministrators().Where(a => a.UserID == userID);
-                if (admins.Count() != 0)
+                if (admins.Any())
                 {
-                    return admins.First();
+                    return admins.FirstOrDefault();
                 }
 
                 var administrator = new Administrator();
@@ -1201,7 +1201,7 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                DB.RemoveEntity(DB.GetCompositions().First(x => x.CompositionID == ID));
+                DB.RemoveEntity(DB.GetCompositions().FirstOrDefault(x => x.CompositionID == ID));
                 if(DB != null) DB.SaveChanges();
                 return true;
             }
@@ -1216,7 +1216,7 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                DB.RemoveEntity(DB.GetAlbums().First(x => x.AlbumID == ID));
+                DB.RemoveEntity(DB.GetAlbums().FirstOrDefault(x => x.AlbumID == ID));
                 if(DB != null) DB.SaveChanges();
                 return true;
             }
@@ -1230,7 +1230,7 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                if(DB != null) DB.RemoveEntity(DB.GetAlbums().First(x => x.AlbumID == album.AlbumID));
+                if(DB != null) DB.RemoveEntity(DB.GetAlbums().FirstOrDefault(x => x.AlbumID == album.AlbumID));
                 if(DB != null) DB.SaveChanges();
                 return true;
             }
@@ -1246,7 +1246,7 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                if(DB != null) DB.RemoveEntity(DB.GetCompositions().First(x => x.CompositionID == composition.CompositionID));
+                if(DB != null) DB.RemoveEntity(DB.GetCompositions().FirstOrDefault(x => x.CompositionID == composition.CompositionID));
                 if(DB != null) DB.SaveChanges();
                 return true;
             }
@@ -1263,18 +1263,18 @@ namespace MediaStreamer.Domain
             try
             {
                 var matches = DB.GetListenedCompositions().Where(c => c.ListenDate == composition.ListenDate && c.UserID == composition.UserID);
-                if (matches.Count() != 0)
+                if (matches.Any())
                 {
-                    var countOfPlays = matches.First().CountOfPlays;
-                    DB.RemoveEntity(matches.First());
+                    var countOfPlays = matches.FirstOrDefault().CountOfPlays;
+                    DB.RemoveEntity(matches.FirstOrDefault());
                     DB.SaveChanges();
                     var newMatches = DB.GetListenedCompositions().Where(c => c.ListenDate == composition.ListenDate &&
                     c.UserID == composition.UserID &&
                     composition.CompositionID == c.CompositionID
                     );
-                    if (newMatches.Count() != 0)
+                    if (newMatches.Any())
                     {
-                        newMatches.First().CountOfPlays += countOfPlays;
+                        newMatches.FirstOrDefault().CountOfPlays += countOfPlays;
                     }
                 }
                 return true;
