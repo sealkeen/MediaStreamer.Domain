@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -21,7 +21,7 @@ namespace MediaStreamer.Domain
         public Nullable<long> XResolution { get; set; }
         public Nullable<long> YResolution { get; set; }
         public Nullable<long> SizeKb { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(4000)]
 #endif
         public string FilePath { get; set; }

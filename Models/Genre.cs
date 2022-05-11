@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -28,7 +28,7 @@ namespace MediaStreamer.Domain
 //#if USE_SQL_SERVER
         public long GenreID { get; set; }
 //#endif
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(256)]
 #endif
         public string GenreName { get; set; }

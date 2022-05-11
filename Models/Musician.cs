@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -24,7 +24,7 @@ namespace MediaStreamer.Domain
         }
     
         public long MusicianID { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(512)]
 #endif
         public string MusicianName { get; set; }

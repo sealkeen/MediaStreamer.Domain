@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
     using System.IO;
@@ -28,7 +28,7 @@ namespace MediaStreamer.Domain
     
         public long CompositionID { get; set; }
 
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(4000)]
 #endif
         public string CompositionName { get; set; }
@@ -37,15 +37,15 @@ namespace MediaStreamer.Domain
         public Nullable<long> AlbumID { get; set; }
         public Nullable<long> Duration { get; set; }
 
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(4000)]
 #endif
         public string FilePath { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(4000)]
 #endif
         public string Lyrics { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(4000)]
 #endif
 

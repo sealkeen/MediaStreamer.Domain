@@ -11,14 +11,14 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
     public partial class Album
     {
         public long AlbumID { get; set; }
 
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(50)]
 #endif
         public string AlbumName { get; set; }
@@ -29,12 +29,12 @@ namespace MediaStreamer.Domain
         public string GenreName { get; set; }
         public Nullable<long> Year { get; set; }
 
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(50)]
 #endif
         public string Label { get; set; }
 
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(50)]
 #endif
         public string Type { get; set; }

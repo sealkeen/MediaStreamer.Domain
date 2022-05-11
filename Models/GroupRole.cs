@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -20,7 +20,7 @@ namespace MediaStreamer.Domain
         public long MusicianID { get; set; }
         public long ArtistID { get; set; }
         public System.DateTime GroupFormationDate { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(256)]
 #endif
         public string MusicianRoleName { get; set; }

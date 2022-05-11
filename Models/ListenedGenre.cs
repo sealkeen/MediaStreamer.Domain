@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -20,7 +20,7 @@ namespace MediaStreamer.Domain
         public Nullable<long> CountOfPlays { get; set; }
         public long UserID { get; set; }
         public long GenreID { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(50)]
 #endif        
         public string GenreName { get; set; }

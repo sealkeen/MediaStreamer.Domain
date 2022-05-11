@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -22,7 +22,7 @@ namespace MediaStreamer.Domain
         {
             this.GroupRoles = new HashSet<GroupRole>();
         }
-#if !NET40
+#if NOT_DEFINED_
         [StringLength(256)]
 #endif
         public string MusicianRoleName { get; set; }

@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if !NET40
+#if NOT_DEFINED_
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -29,28 +29,28 @@ namespace MediaStreamer.Domain
         }
     
         public long UserID { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(128)]
 #endif
         public string UserName { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(128)]
 #endif
         public string Password { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(1000)]
 #endif
         public string Email { get; set; }
         public System.DateTime DateOfSignUp { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(1000)]
 #endif
         public string VKLink { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(1000)]
 #endif
         public string FaceBookLink { get; set; }
-#if !NET40
+#if NOT_DEFINED_
         [MaxLength(1000)]
 #endif
         public string Bio { get; set; }
