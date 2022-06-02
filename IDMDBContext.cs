@@ -16,6 +16,7 @@ namespace MediaStreamer.Domain
         void RemoveEntity<T>(T o) where T : class;
         void UpdateAndSaveChanges<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
+        bool ClearTable(string tableName);
         IQueryable<Administrator> GetAdministrators();
         void Add(Administrator administrator);
         IQueryable<Album> GetAlbums();

@@ -121,6 +121,7 @@ namespace MediaStreamer.Domain
         bool DeleteListenedComposition(ListenedComposition composition, Action<string> errorAction = null);
         bool DeleteAlbum(long ID, Action<string> errorAction = null);
         bool DeleteAlbum(Album album, Action<string> errorAction = null);
+        bool ClearListenedCompositions();
 
         IQueryable<ListenedComposition> GetCurrentUsersListenedCompositions(User user);
         IQueryable<ListenedComposition> GetCurrentUsersListenedGenres(User user);

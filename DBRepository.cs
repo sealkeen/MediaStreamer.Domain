@@ -990,40 +990,25 @@ namespace MediaStreamer.Domain
         {
             try
             {
-                var existingComps = DB.GetListenedCompositions().Where(c => c.CompositionID == 
-                composition.CompositionID && user.UserID == c.UserID);
-                if (existingComps != null &&
-                    existingComps.Any())
-                {
-                    var last = existingComps.FirstOrDefault();
-                    last.CountOfPlays += 1;
-                    DB.SaveChanges();
-                    return;
-                }
+                //var existingComps = DB.GetListenedCompositions().Where(c => c.CompositionID == 
+                //composition.CompositionID && user.UserID == c.UserID);
+                //if (existingComps != null &&
+                //    existingComps.Any())
+                //{
+                //    var last = existingComps.FirstOrDefault();
+                //    last.CountOfPlays += 1;
+                //    last.ListenDate = DateTime.Now;
+                //    DB.SaveChanges();
+                //    return;
+                //}
                 /*public long*/
                 var UserID = user.UserID;
-                //*public long*/ 
-                var ArtistID = composition.ArtistID;
-                //*public System.DateTime*/ 
-                //var GroupFormationDate = composition.GroupFormationDate;
-                //*public long*/ 
-                var AlbumID = composition.AlbumID;
-                //*public long*/ 
                 var CompositionID = composition.CompositionID;
-                Album album;
                 var lC = new ListenedComposition()
                 {
-                    Album = (album = composition.Album == null? AddAlbum(composition.Artist.ArtistName, "Unknown") : composition.Album),
-                    AlbumID = album.AlbumID,
-                    Artist = composition.Artist,
-                    ArtistID = composition.ArtistID.Value,
-                    Composition = composition,
+                    ListenDate = DateTime.Now,
                     CompositionID = composition.CompositionID,
                     CountOfPlays = 1,
-                    //GroupFormationDate = composition.GroupFormationDate == null ? DateTime.MinValue : composition.GroupFormationDate.Value,
-                    //GroupMember = composition.GroupMember,
-                    ListenDate = DateTime.Now,
-                    User = user,
                     UserID = user.UserID
                 };
 
@@ -1310,6 +1295,11 @@ namespace MediaStreamer.Domain
             return from comp in DB.GetListenedCompositions()
                    where comp.UserID == user.UserID
                    select comp;
+        }
+
+        public bool ClearListenedCompositions()
+        {
+            return DB.ClearTable("ListenedCompositions");
         }
     }
 }
