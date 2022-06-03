@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using LinqExtensions;
 using MediaStreamer.Domain;
 //using MediaStreamer.Exceptions;
 
@@ -853,9 +854,9 @@ namespace MediaStreamer.Domain
                 var existing = from comp in DB.GetCompositions()
                                join alb in DB.GetAlbums() on comp.AlbumID equals alb.AlbumID
                                join art in DB.GetArtists() on comp.ArtistID equals art.ArtistID
-                               where comp.CompositionName == title 
+                               where (comp.CompositionName == title 
                                && alb.AlbumName == album.AlbumName 
-                               && art.ArtistName == artist.ArtistName
+                               && art.ArtistName == artist.ArtistName) || StringExtensions.Equals(comp.FilePath, fileName)
                                select comp;
 
                 if (existing.Any())

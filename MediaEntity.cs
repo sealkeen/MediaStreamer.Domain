@@ -12,5 +12,6 @@ namespace MediaStreamer.Domain
         public abstract bool IsValid();
         public virtual string GetTitle() { return "MediaEntity"; }
         public virtual string GetDescription() { return "Description"; }
+
     }
 }
