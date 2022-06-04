@@ -17,6 +17,7 @@ namespace MediaStreamer.Domain
         void UpdateAndSaveChanges<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
         bool ClearTable(string tableName);
+        string GetContainingFolderPath();
         IQueryable<Administrator> GetAdministrators();
         void Add(Administrator administrator);
         IQueryable<Album> GetAlbums();
