@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -20,54 +20,42 @@ namespace MediaStreamer.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Administrators = new HashSet<Administrator>();
-            this.ListenedAlbums = new HashSet<ListenedAlbum>();
-            this.ListenedArtists = new HashSet<ListenedArtist>();
             this.ListenedCompositions = new HashSet<ListenedComposition>();
-            this.ListenedGenres = new HashSet<ListenedGenre>();
-            this.Moderators = new HashSet<Moderator>();
         }
     
         public long UserID { get; set; }
-#if NOT_DEFINED_
+
+#if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(128)]
 #endif
         public string UserName { get; set; }
-#if NOT_DEFINED_
+
+#if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(128)]
 #endif
         public string Password { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(1000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(256)]
 #endif
         public string Email { get; set; }
         public System.DateTime DateOfSignUp { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(1000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(256)]
 #endif
         public string VKLink { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(1000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(256)]
 #endif
         public string FaceBookLink { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(1000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(512)]
 #endif
         public string Bio { get; set; }
-        public Nullable<System.DateTime> LastListenedCompositionChange { get; set; }
-        public Nullable<System.DateTime> LastListenEntitiesUpdate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Administrator> Administrators { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedAlbum> ListenedAlbums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedArtist> ListenedArtists { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedGenre> ListenedGenres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Moderator> Moderators { get; set; }
     }
 }

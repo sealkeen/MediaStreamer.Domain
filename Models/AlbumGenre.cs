@@ -11,25 +11,13 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
-    using System.ComponentModel.DataAnnotations;
-#endif
 
     public partial class AlbumGenre
     {
         public long GenreID { get; set; }
-#if NOT_DEFINED_
-        [StringLength(50)]
-#endif
-        public string GenreName { get; set; }
-        public long ArtistID { get; set; }
-        public System.DateTime GroupFormationDate { get; set; }
         public long AlbumID { get; set; }
-        public Nullable<System.DateTime> DateOfApplication { get; set; }
     
         public virtual Album Album { get; set; }
-        public virtual GroupMember GroupMember { get; set; }
-        public virtual Artist Artist { get; set; }
         public virtual Genre Genre { get; set; }
     }
 }

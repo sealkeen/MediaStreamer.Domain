@@ -9,66 +9,41 @@
 
 namespace MediaStreamer.Domain
 {
-    using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
     using System.Linq;
-    using MediaStreamer.Domain;
 
     public partial class Artist : MediaEntity
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Artist()
         {
             this.Albums = new HashSet<Album>();
             this.ArtistGenres = new HashSet<ArtistGenre>();
             this.Compositions = new HashSet<Composition>();
-            this.CompositionVideos = new HashSet<CompositionVideo>();
-            this.GroupMembers = new HashSet<GroupMember>();
-            this.GroupRoles = new HashSet<GroupRole>();
-            this.ListenedAlbums = new HashSet<ListenedAlbum>();
-            this.ListenedArtists = new HashSet<ListenedArtist>();
             this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
         public long ArtistID { get; set; }
 
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]
 #endif
         public string ArtistName { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Album> Albums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }
         public virtual ICollection<ArtistGenre> ArtistGenres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Composition> Compositions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GroupMember> GroupMembers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GroupRole> GroupRoles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedAlbum> ListenedAlbums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedArtist> ListenedArtists { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
 
         public override string GetID()
         {
             return ArtistID.ToString();
         }
-
         public override string GetTitle()
         {
             return ArtistName;
         }
-
         public override string GetDescription()
         {
             //throw new NotImplementedException();
@@ -77,7 +52,6 @@ namespace MediaStreamer.Domain
             else
                 return "Genre";
         }
-
         public override bool IsValid()
         {
             return true;

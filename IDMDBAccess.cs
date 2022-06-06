@@ -18,11 +18,6 @@ namespace MediaStreamer.Domain
         void PopulateDataBase(Action<string> errorAction = null);
 
         /// <returns>Returns null if not successful.</returns>
-        GroupMember AddGroupMember(string artistName, DateTime formationDate,
-            long? dateOfDisband = null //, FirstFMEntities DB = null
-        );
-
-        /// <returns>Returns null if not successful.</returns>
         Album AddAlbum( string artistName, string albumName,
             //long artistID = -1, long groupFormationDate = -1,
             long? year = null, string label = null, string type = null, 
@@ -41,8 +36,7 @@ namespace MediaStreamer.Domain
         /// <returns>Returns null if not successful.</returns>
         Album AddAlbum(
             Artist artist, Genre genre, string albumFromFile,
-            string label = null, DateTime? gFD = null,
-            string type = null, long? year = null);
+            string label = null, string type = null, long? year = null);
 
         /// <summary>
         /// This method changes the existing composition
@@ -78,16 +72,9 @@ namespace MediaStreamer.Domain
         Album GetFirstAlbumIfExists(string artistName, string albumName);
 
         IQueryable<Artist> GetPossibleArtists(string name);
-
         IQueryable<Genre> GetPossibleGenres(string name);
-
         IQueryable<Album> GetPossibleAlbums(long artistID, string albumName);
-
         IQueryable<Album> GetPossibleAlbums(string artistName, string albumName);
-
-        IQueryable<GroupMember> GetPossibleGroupMembers(long artistID);
-
-        IQueryable<GroupMember> GetPossibleGroupMembers(string artistName);
 
         bool ContainsArtist(string artistName, List<Artist> artists);
 
@@ -124,8 +111,6 @@ namespace MediaStreamer.Domain
         bool ClearListenedCompositions();
 
         IQueryable<ListenedComposition> GetCurrentUsersListenedCompositions(User user);
-        IQueryable<ListenedComposition> GetCurrentUsersListenedGenres(User user);
-        IQueryable<ListenedComposition> GetCurrentUsersListenedArtist(User user);
     }
 }
 

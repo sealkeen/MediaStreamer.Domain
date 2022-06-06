@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
 
@@ -21,8 +21,9 @@ namespace MediaStreamer.Domain
         public Nullable<long> XResolution { get; set; }
         public Nullable<long> YResolution { get; set; }
         public Nullable<long> SizeKb { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(4000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(512)]
 #endif
         public string FilePath { get; set; }
     }

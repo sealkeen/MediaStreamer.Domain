@@ -46,5 +46,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\LinqExtensions\LinqExtensions.csproj" />
 	  <ProjectReference Include="..\MediaStreamer.Logging\MediaStreamer.Logging.csproj" />
+	  <ProjectReference Include="..\StringExtensions\StringExtensions.csproj" />
 	</ItemGroup>
 </Project>

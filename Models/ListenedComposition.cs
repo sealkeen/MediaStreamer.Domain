@@ -20,16 +20,15 @@ namespace MediaStreamer.Domain
             ListenDate = DateTime.Now;
             CompositionID = -1;
         }
+
+        public long ListenedCompositionID { get; set; }
         public System.DateTime ListenDate { get; set; }
         public Nullable<long> CountOfPlays { get; set; }
         public long UserID { get; set; }
         public long CompositionID { get; set; }
         public double StoppedAt { get; set; }
     
-        public virtual Album Album { get; set; }
-        public virtual Artist Artist { get; set; }
         public virtual Composition Composition { get; set; }
-        //public virtual GroupMember GroupMember { get; set; }
         public virtual User User { get; set; }
         
         public string GetPath() {

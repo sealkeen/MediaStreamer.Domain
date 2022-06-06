@@ -11,35 +11,27 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
-
     public partial class Genre
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Genre()
         {
             this.Albums = new HashSet<Album>();
             this.AlbumGenres = new HashSet<AlbumGenre>();
             this.ArtistGenres = new HashSet<ArtistGenre>();
-            this.ListenedGenres = new HashSet<ListenedGenre>();
         }
-//#if USE_SQL_SERVER
+
         public long GenreID { get; set; }
-//#endif
-#if NOT_DEFINED_
+
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]
 #endif
         public string GenreName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Album> Albums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArtistGenre> ArtistGenres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedGenre> ListenedGenres { get; set; }
     }
 }

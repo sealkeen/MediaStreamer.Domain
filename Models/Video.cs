@@ -11,16 +11,15 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
 
     public partial class Video
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Video()
         {
-            this.CompositionVideos = new HashSet<CompositionVideo>();
+
         }
     
         public long VideoID { get; set; }
@@ -29,12 +28,9 @@ namespace MediaStreamer.Domain
         public Nullable<double> FPS { get; set; }
         public Nullable<bool> VariableFPS { get; set; }
         public Nullable<long> SizeKb { get; set; }
-#if NOT_DEFINED_
-        [MaxLength(4000)]
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(512)]
 #endif
         public string FilePath { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }
     }
 }

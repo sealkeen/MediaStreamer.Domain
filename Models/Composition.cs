@@ -11,7 +11,7 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
     using System.IO;
@@ -19,7 +19,6 @@ namespace MediaStreamer.Domain
     
     public partial class Composition : MediaEntity, IComposition, ICompositionInstance
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Composition()
         {
             this.CompositionVideos = new HashSet<CompositionVideo>();
@@ -28,36 +27,33 @@ namespace MediaStreamer.Domain
     
         public long CompositionID { get; set; }
 
-#if NOT_DEFINED_
-        [MaxLength(4000)]
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(256)]
 #endif
         public string CompositionName { get; set; }
         public Nullable<long> ArtistID { get; set; }
-        //public Nullable<System.DateTime> GroupFormationDate { get; set; }
         public Nullable<long> AlbumID { get; set; }
         public Nullable<long> Duration { get; set; }
 
-#if NOT_DEFINED_
-        [StringLength(4000)]
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [StringLength(324)]
 #endif
         public string FilePath { get; set; }
-#if NOT_DEFINED_
-        [StringLength(4000)]
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [StringLength(3600)]
 #endif
         public string Lyrics { get; set; }
-#if NOT_DEFINED_
-        [StringLength(4000)]
-#endif
 
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [StringLength(512)]
+#endif
         public string About { get; set; }
     
         public virtual Album Album { get; set; }
         public virtual Artist Artist { get; set; }
-        //public virtual GroupMember GroupMember { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
 
         public override string GetID()
@@ -81,7 +77,6 @@ namespace MediaStreamer.Domain
         {
             return File.Exists(FilePath);
         }
-
         public Composition GetInstance() 
         {
             return this;

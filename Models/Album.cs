@@ -11,46 +11,35 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
     public partial class Album
     {
         public long AlbumID { get; set; }
 
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(50)]
 #endif
         public string AlbumName { get; set; }
         public Nullable<long> ArtistID { get; set; }
-        public Nullable<System.DateTime> GroupFormationDate { get; set; }
 
         public long GenreID { get; set; }
-        public string GenreName { get; set; }
         public Nullable<long> Year { get; set; }
 
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(50)]
 #endif
         public string Label { get; set; }
 
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(50)]
 #endif
         public string Type { get; set; }
         
         public virtual Genre Genre { get; set; }
-        public virtual GroupMember GroupMember { get; set; }
         public virtual Artist Artist { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Composition> Compositions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedAlbum> ListenedAlbums { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
     }
 }

@@ -11,16 +11,16 @@ namespace MediaStreamer.Domain
 {
     using System;
     using System.Collections.Generic;
-#if NOT_DEFINED_
+#if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
 
     public partial class ArtistGenre
     {
         public long ArtistID { get; set; }
-
         public long GenreID { get; set; }
-#if NOT_DEFINED_
+
+#if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]
 #endif
         public string GenreName { get; set; }
