@@ -10,16 +10,16 @@ namespace MediaStreamer.Domain
     {
         IDMDBContext DB { get; set; }
         void OnStartup();
-        long GetNewCompositionID();
-        long GetNewArtistID();
-        long GetNewAlbumID();
-        long GetNewModeratorID();
-        long GetNewAdministratorID();
+        Guid GetNewCompositionID();
+        Guid GetNewArtistID();
+        Guid GetNewAlbumID();
+        Guid GetNewModeratorID();
+        Guid GetNewAdministratorID();
         void PopulateDataBase(Action<string> errorAction = null);
 
         /// <returns>Returns null if not successful.</returns>
         Album AddAlbum( string artistName, string albumName,
-            //long artistID = -1, long groupFormationDate = -1,
+            //Guid artistID = -1, long groupFormationDate = -1,
             long? year = null, string label = null, string type = null, 
             Action<string> errorAction = null 
             );
@@ -73,7 +73,7 @@ namespace MediaStreamer.Domain
 
         IQueryable<Artist> GetPossibleArtists(string name);
         IQueryable<Genre> GetPossibleGenres(string name);
-        IQueryable<Album> GetPossibleAlbums(long artistID, string albumName);
+        IQueryable<Album> GetPossibleAlbums(Guid artistID, string albumName);
         IQueryable<Album> GetPossibleAlbums(string artistName, string albumName);
 
         bool ContainsArtist(string artistName, List<Artist> artists);
@@ -99,14 +99,14 @@ namespace MediaStreamer.Domain
             string email, string bio,
             string VKLink = "null", string FaceBookLink = "null", Action<string> errorAction = null);
 
-        Moderator AddNewModerator(long userID, Action<string> errorAction = null);
+        Moderator AddNewModerator(Guid userID, Action<string> errorAction = null);
 
-        Administrator AddNewAdministrator(long userID, long moderID, Action<string> errorAction = null);
+        Administrator AddNewAdministrator(Guid userID, Guid moderID, Action<string> errorAction = null);
 
-        bool DeleteComposition(long ID, Action<string> errorAction = null);
+        bool DeleteComposition(Guid ID, Action<string> errorAction = null);
         bool DeleteComposition(Composition composition, Action<string> errorAction = null);
         bool DeleteListenedComposition(ListenedComposition composition, Action<string> errorAction = null);
-        bool DeleteAlbum(long ID, Action<string> errorAction = null);
+        bool DeleteAlbum(Guid ID, Action<string> errorAction = null);
         bool DeleteAlbum(Album album, Action<string> errorAction = null);
         bool ClearListenedCompositions();
 

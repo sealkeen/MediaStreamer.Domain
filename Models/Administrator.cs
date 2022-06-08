@@ -14,9 +14,9 @@ namespace MediaStreamer.Domain
     
     public partial class Administrator
     {
-        public long AdministratorID { get; set; }
-        public Nullable<long> ModeratorID { get; set; }
-        public Nullable<long> UserID { get; set; }
+        public Guid AdministratorID { get; set; }
+        public Nullable<Guid> ModeratorID { get; set; }
+        public Nullable<Guid> UserID { get; set; }
     
         public virtual User User { get; set; }
         public virtual Moderator Moderator { get; set; }

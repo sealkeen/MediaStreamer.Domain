@@ -14,8 +14,8 @@ namespace MediaStreamer.Domain
     
     public partial class CompositionVideo
     {
-        public long VideoID { get; set; }
-        public long CompositionID { get; set; }
+        public Guid VideoID { get; set; }
+        public Guid CompositionID { get; set; }
     
         public virtual Composition Composition { get; set; }
         public virtual Video Video { get; set; }

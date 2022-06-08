@@ -25,14 +25,14 @@ namespace MediaStreamer.Domain
             this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
     
-        public long CompositionID { get; set; }
+        public Guid CompositionID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(256)]
 #endif
         public string CompositionName { get; set; }
-        public Nullable<long> ArtistID { get; set; }
-        public Nullable<long> AlbumID { get; set; }
+        public Nullable<Guid> ArtistID { get; set; }
+        public Nullable<Guid> AlbumID { get; set; }
         public Nullable<long> Duration { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
@@ -81,11 +81,12 @@ namespace MediaStreamer.Domain
         {
             return this;
         }
+
         public int CompareTo(Composition previous)
         {
-            if (previous != null && CompositionID == previous.CompositionID)
+            if (previous != null && this.CompositionID == previous.CompositionID)
                 return 0;
-            else if (previous != null && CompositionID < previous.CompositionID)
+            else if (previous != null && this.CompositionID.CompareTo(previous.CompositionID) < 0)
                 return -1;
             else
                 return 0;

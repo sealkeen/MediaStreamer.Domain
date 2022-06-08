@@ -23,7 +23,7 @@ namespace MediaStreamer.Domain
             this.ArtistGenres = new HashSet<ArtistGenre>();
         }
 
-        public long GenreID { get; set; }
+        public Guid GenreID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]

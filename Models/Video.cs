@@ -22,12 +22,12 @@ namespace MediaStreamer.Domain
 
         }
     
-        public long VideoID { get; set; }
-        public Nullable<long> XResolution { get; set; }
-        public Nullable<long> YResolution { get; set; }
+        public Guid VideoID { get; set; }
+        public Nullable<Guid> XResolution { get; set; }
+        public Nullable<Guid> YResolution { get; set; }
         public Nullable<double> FPS { get; set; }
         public Nullable<bool> VariableFPS { get; set; }
-        public Nullable<long> SizeKb { get; set; }
+        public Nullable<Guid> SizeKb { get; set; }
 #if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(512)]
 #endif

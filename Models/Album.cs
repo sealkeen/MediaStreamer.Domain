@@ -16,15 +16,15 @@ namespace MediaStreamer.Domain
 #endif
     public partial class Album
     {
-        public long AlbumID { get; set; }
+        public Guid AlbumID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(50)]
 #endif
         public string AlbumName { get; set; }
-        public Nullable<long> ArtistID { get; set; }
+        public Nullable<Guid> ArtistID { get; set; }
 
-        public long GenreID { get; set; }
+        public Guid GenreID { get; set; }
         public Nullable<long> Year { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD

@@ -17,8 +17,8 @@ namespace MediaStreamer.Domain
 
     public partial class ArtistGenre
     {
-        public long ArtistID { get; set; }
-        public long GenreID { get; set; }
+        public Guid ArtistID { get; set; }
+        public Guid GenreID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]

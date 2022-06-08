@@ -19,8 +19,8 @@ namespace MediaStreamer.Domain
 
         }
     
-        public long ModeratorID { get; set; }
-        public Nullable<long> UserID { get; set; }
+        public Guid ModeratorID { get; set; }
+        public Nullable<Guid> UserID { get; set; }
         public virtual User User { get; set; }
     }
 }

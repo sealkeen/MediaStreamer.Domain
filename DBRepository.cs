@@ -28,44 +28,29 @@ namespace MediaStreamer.Domain
             DB.EnsureCreated();
         }
 
-        public long GetNewCompositionID()
+        public Guid GetNewCompositionID()
         {
-            if (DB.GetCompositions().Any())
-                return DB.GetCompositions().Max(c => c.CompositionID) + 1;
-            else
-                return 1;
+            return Guid.NewGuid();
         }
 
-        public long GetNewArtistID()
+        public Guid GetNewArtistID()
         {
-            if (DB.GetArtists().Any())
-                return (DB.GetArtists().Max(a => a.ArtistID) + 1);
-            else
-                return 1;
+            return Guid.NewGuid();
         }
 
-        public long GetNewAlbumID()
+        public Guid GetNewAlbumID()
         {
-            if (DB.GetAlbums().Any())
-                return (DB.GetAlbums().Max(a => a.AlbumID) + 1);
-            else
-                return 1;
+            return Guid.NewGuid();
         }
 
-        public long GetNewModeratorID()
+        public Guid GetNewModeratorID()
         {
-            if (DB.GetModerators().Any())
-                return (DB.GetModerators().Max(a => a.ModeratorID) + 1);
-            else
-                return 1;
+            return Guid.NewGuid();
         }
 
-        public long GetNewAdministratorID()
+        public Guid GetNewAdministratorID()
         {
-            if (DB.GetAdministrators().Any())
-                return (DB.GetAdministrators().Max(a => a.AdministratorID) + 1);
-            else
-                return 1;
+            return Guid.NewGuid();
         }
 
         public void PopulateDataBase( Action<string> errorAction = null)
@@ -268,7 +253,7 @@ namespace MediaStreamer.Domain
                 AlbumID = GetNewAlbumID(),
                 ArtistID = foundArtist?.ArtistID,
                 AlbumName = albumName,
-                GenreID = genre != null ? genre.GenreID : int.MaxValue,
+                GenreID = Guid.NewGuid(),
                 //ArtistName = targetArtist.ArtistName,
                 Label = label,
                 Type = type,
@@ -358,7 +343,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public ArtistGenre GetFirstArtistGenreIfExists(long artistID, long genreID)
+        public ArtistGenre GetFirstArtistGenreIfExists(Guid artistID, Guid genreID)
         {
             var ags = DB.GetArtistGenres().Where(ag => ag.ArtistID == artistID && ag.GenreID == genreID);
 
@@ -486,7 +471,7 @@ namespace MediaStreamer.Domain
             return matches;
         }
 
-        public IQueryable<Album> GetPossibleAlbums(long artistID, string albumName)
+        public IQueryable<Album> GetPossibleAlbums(Guid artistID, string albumName)
         {
             var matches = from match in DB.GetAlbums()
                           where (match.AlbumName == albumName &&
@@ -634,7 +619,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public ArtistGenre FindArtistGenreOrReturnNull(long artistID, string genreName)
+        public ArtistGenre FindArtistGenreOrReturnNull(Guid artistID, string genreName)
         {
             var query = from ag in DB.GetArtistGenres()
                         where ag.ArtistID == artistID &&
@@ -975,15 +960,8 @@ namespace MediaStreamer.Domain
             try
             {
                 var user = new User();
-                long id = 0;
-                try
-                {
-                    id = DB.GetUsers().Max(u => u.UserID) + 1;
-                    // skip catching exception and leave the default value of 0
-                }
-                catch { }
+                Guid id = Guid.NewGuid();
 
-                //user.UserID = id;
                 user.UserName = login;
                 user.Email = email;
                 user.Password = ToMD5(psswd);
@@ -1005,7 +983,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public Moderator AddNewModerator(long userID,
+        public Moderator AddNewModerator(Guid userID,
             Action<string> errorAction = null)
         {
             try
@@ -1034,7 +1012,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public Administrator AddNewAdministrator(long userID, long moderID,
+        public Administrator AddNewAdministrator(Guid userID, Guid moderID,
             Action<string> errorAction = null)
         {
             try
@@ -1069,7 +1047,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public bool DeleteComposition(long ID,
+        public bool DeleteComposition(Guid ID,
             Action<string> errorAction = null)
         {
             try
@@ -1085,7 +1063,7 @@ namespace MediaStreamer.Domain
             }
         }
 
-        public bool DeleteAlbum(long ID, Action<string> errorAction = null)
+        public bool DeleteAlbum(Guid ID, Action<string> errorAction = null)
         {
             try
             {

@@ -6,7 +6,7 @@ namespace MediaStreamer.Domain
 {
     public interface IAlbum
     {
-        long AlbumID { get; set; }
+        Guid AlbumID { get; set; }
         string AlbumName { get; set; }
         Nullable<long> Year { get; set; }
     }

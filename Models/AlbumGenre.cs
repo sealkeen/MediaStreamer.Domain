@@ -14,8 +14,8 @@ namespace MediaStreamer.Domain
 
     public partial class AlbumGenre
     {
-        public long GenreID { get; set; }
-        public long AlbumID { get; set; }
+        public Guid GenreID { get; set; }
+        public Guid AlbumID { get; set; }
     
         public virtual Album Album { get; set; }
         public virtual Genre Genre { get; set; }

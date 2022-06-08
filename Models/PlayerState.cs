@@ -6,7 +6,7 @@ namespace MediaStreamer.Domain
 {
     public class PlayerState
     {
-        public long StateID { get; set; }
+        public Guid StateID { get; set; }
         public DateTime StateTime { get; set; }
         public double VolumeLevel { get; set; }
     }

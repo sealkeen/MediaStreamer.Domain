@@ -6,9 +6,11 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System;
 
 namespace MediaStreamer.Domain
 {
+    using System;
     using System.Collections.Generic;
 #if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
@@ -24,7 +26,7 @@ namespace MediaStreamer.Domain
             this.Compositions = new HashSet<Composition>();
             this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
-        public long ArtistID { get; set; }
+        public Guid ArtistID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [StringLength(256)]

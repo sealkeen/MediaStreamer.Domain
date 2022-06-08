@@ -17,10 +17,10 @@ namespace MediaStreamer.Domain
 
     public partial class Picture
     {
-        public long PictureID { get; set; }
-        public Nullable<long> XResolution { get; set; }
-        public Nullable<long> YResolution { get; set; }
-        public Nullable<long> SizeKb { get; set; }
+        public Guid PictureID { get; set; }
+        public Nullable<Guid> XResolution { get; set; }
+        public Nullable<Guid> YResolution { get; set; }
+        public Nullable<Guid> SizeKb { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(512)]

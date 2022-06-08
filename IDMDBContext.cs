@@ -29,7 +29,6 @@ namespace MediaStreamer.Domain
         IQueryable<ArtistGenre> GetArtistGenres();
         void Add(ArtistGenre artistGenre);
         IQueryable<Composition> GetCompositions();
-        Task<IQueryable<Composition>> GetCompositionsAsync();
         IQueryable<IComposition> GetICompositions();
         void Add(Composition composition);
         IQueryable<CompositionVideo> GetCompositionVideos();

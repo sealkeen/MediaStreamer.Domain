@@ -16,16 +16,16 @@ namespace MediaStreamer.Domain
     {
         public ListenedComposition()
         {
-            UserID = 0;
+            UserID = Guid.Empty;
             ListenDate = DateTime.Now;
-            CompositionID = -1;
+            CompositionID = Guid.Empty;
         }
 
-        public long ListenedCompositionID { get; set; }
+        public Guid ListenedCompositionID { get; set; }
         public System.DateTime ListenDate { get; set; }
         public Nullable<long> CountOfPlays { get; set; }
-        public long UserID { get; set; }
-        public long CompositionID { get; set; }
+        public Guid UserID { get; set; }
+        public Guid CompositionID { get; set; }
         public double StoppedAt { get; set; }
     
         public virtual Composition Composition { get; set; }

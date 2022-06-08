@@ -6,7 +6,7 @@ namespace MediaStreamer.Domain
 {
     public interface IArtist
     {
-        long ArtistID { get; set; }
+        Guid ArtistID { get; set; }
         string ArtistName { get; set; }
     }
 }

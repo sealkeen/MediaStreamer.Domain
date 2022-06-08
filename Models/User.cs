@@ -23,7 +23,7 @@ namespace MediaStreamer.Domain
             this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
     
-        public long UserID { get; set; }
+        public Guid UserID { get; set; }
 
 #if NETCOREAPP || NET45 || NETSTANDARD
         [MaxLength(128)]
