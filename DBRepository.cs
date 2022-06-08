@@ -253,7 +253,7 @@ namespace MediaStreamer.Domain
                 AlbumID = GetNewAlbumID(),
                 ArtistID = foundArtist?.ArtistID,
                 AlbumName = albumName,
-                GenreID = Guid.NewGuid(),
+                GenreID = genre.GenreID,
                 //ArtistName = targetArtist.ArtistName,
                 Label = label,
                 Type = type,
@@ -858,29 +858,44 @@ namespace MediaStreamer.Domain
             return matches.FirstOrDefault();
         }
 
-        public void AddNewListenedComposition(Composition composition, User user,
+        public void AddNewListenedComposition(Composition newC, User user,
             Action<string> errorAction = null)
         {
             try
             {
-                //var existingComps = DB.GetListenedCompositions().Where(c => c.CompositionID == 
-                //composition.CompositionID && user.UserID == c.UserID);
-                //if (existingComps != null &&
-                //    existingComps.Any())
-                //{
-                //    var last = existingComps.FirstOrDefault();
-                //    last.CountOfPlays += 1;
-                //    last.ListenDate = DateTime.Now;
-                //    DB.SaveChanges();
-                //    return;
-                //}
+                var existingComps = (
+                    from lc in DB.GetListenedCompositions()
+                    join c in DB.GetCompositions()
+                        on lc.CompositionID equals c.CompositionID
+                    join u in DB.GetUsers()
+                        on lc.UserID equals u.UserID
+                    where
+                        lc.UserID == user.UserID &&
+                        c.CompositionName == newC.CompositionName &&
+                        c.AlbumID == newC.AlbumID &&
+                        c.ArtistID == newC.ArtistID
+                    select lc
+
+                    )
+                ;
+                if (existingComps != null &&
+                    existingComps.Any())
+                {
+                    var last = existingComps.FirstOrDefault();
+                    last.CountOfPlays += 1;
+                    last.ListenDate = DateTime.Now;
+                    DB.SaveChanges();
+                    return;
+                }
                 /*public long*/
                 var UserID = user.UserID;
-                var CompositionID = composition.CompositionID;
+                AddDefaultUserIfNotExists(user);
+                var CompositionID = newC.CompositionID;
                 var lC = new ListenedComposition()
                 {
+                    ListenedCompositionID = Guid.NewGuid(),
                     ListenDate = DateTime.Now,
-                    CompositionID = composition.CompositionID,
+                    CompositionID = newC.CompositionID,
                     CountOfPlays = 1,
                     UserID = user.UserID
                 };
@@ -891,6 +906,20 @@ namespace MediaStreamer.Domain
             catch (Exception ex)
             {
                 if(errorAction != null) errorAction.Invoke(ex.Message);
+            }
+        }
+
+        private void AddDefaultUserIfNotExists(User user)
+        {
+            if (user.UserID == Guid.Empty)
+            {
+                if (DB.GetUsers().Count() <= 0 ||
+                    DB.GetUsers().Where(u => u.UserID == Guid.Empty).Count() <= 0
+                )
+                {
+                    DB.Add(new User() { UserID = Guid.Empty, UserName = "__Default", Email = "de@fau.lt", DateOfSignUp = DateTime.Now, Password = "password" });
+                    DB.SaveChanges();
+                }
             }
         }
 
