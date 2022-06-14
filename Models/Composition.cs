@@ -21,6 +21,8 @@ namespace MediaStreamer.Domain
     {
         public Composition()
         {
+            CompositionName = "null";
+            FilePath = "null";
             this.CompositionVideos = new HashSet<CompositionVideo>();
             this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
