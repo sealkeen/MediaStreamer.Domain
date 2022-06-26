@@ -9,7 +9,7 @@
 	  <DefineConstants>TRACE;USE_SQL_SERVER</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	  <Compile Remove="Properties\AssemblyInfo.cs"/>
 	</ItemGroup>
 
 	<ItemGroup><!--<add assembly="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />-->
@@ -46,6 +46,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\LinqExtensions\LinqExtensions.csproj" />
 	  <ProjectReference Include="..\MediaStreamer.Logging\MediaStreamer.Logging.csproj" />
+	  <ProjectReference Include="..\Sealkeen.Abstractions\Sealkeen.Abstractions.csproj" />
 	  <ProjectReference Include="..\StringExtensions\StringExtensions.csproj" />
 	</ItemGroup>
 </Project>

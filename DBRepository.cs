@@ -53,7 +53,7 @@ namespace MediaStreamer.Domain
             return Guid.NewGuid();
         }
 
-        public void PopulateDataBase( Action<string> errorAction = null)
+        public void PopulateDataBase( Action<string> errorAction = null )
         {
             try
             {
@@ -637,7 +637,7 @@ namespace MediaStreamer.Domain
                 return;
             if (newGenre != null)
             {   // genre tag is valid, creating new entity
-                genre = new Genre() { GenreName = newGenre };
+                genre = new Genre() { GenreID = Guid.NewGuid(), GenreName = newGenre };
                 try
                 {
                     DB.AddEntity(genre);
