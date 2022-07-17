@@ -1,18 +1,25 @@
-﻿using System;
+﻿using StringExtensions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using StringExtensions;
 using System.Threading.Tasks;
-using LinqExtensions;
-using MediaStreamer.Domain;
 
 namespace MediaStreamer.Domain
 {
     public class DBRepository : IDBRepository
     {
+        private static DBRepository _instance;
+        public static async Task<IDBRepository> GetInstanceAsync(IDMDBContext context)
+        {
+            if (_instance == null)
+                _instance = new DBRepository();
+            _instance.DB = context;
+            return _instance;
+        }
+
         public IDMDBContext DB { get; set; }
 
         //private Task<IDBRepository> _loadingTask;

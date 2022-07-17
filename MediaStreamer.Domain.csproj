@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 <!--EntityType.csproj-->
 	<PropertyGroup>
@@ -9,12 +9,9 @@
 	  <DefineConstants>TRACE;USE_SQL_SERVER</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs"/>
-	</ItemGroup>
-
-	<ItemGroup><!--<add assembly="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />-->
-	
-	  <Folder Include="Properties\" />
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
 	</ItemGroup>
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
 	  <PackageReference Include="Microsoft.Bcl" Version="1.1.10" />
