@@ -865,6 +865,16 @@ namespace MediaStreamer.Domain
             return matches.FirstOrDefault();
         }
 
+        public async Task AddNewListenedCompositionAsync(Composition newC, User user,
+            Action<string> errorAction = null)
+        {
+#if !NET40
+            await Task.Factory.StartNew(() => AddNewListenedComposition(newC, user, errorAction));
+#else
+            Task.Factory.StartNew(() => AddNewListenedComposition(newC, user, errorAction));
+#endif
+        }
+
         public void AddNewListenedComposition(Composition newC, User user,
             Action<string> errorAction = null)
         {
@@ -941,8 +951,7 @@ namespace MediaStreamer.Domain
             Action<string> errorAction = null)
         {
             //var matches = from user in DB.Administrators join 
-            try
-            {
+            try {
                 var adminQuery = from u in DB.GetUsers()
                                  join a in DB.GetAdministrators()
                                  on u.UserID equals a.UserID

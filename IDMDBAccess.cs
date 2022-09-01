@@ -58,6 +58,7 @@ namespace MediaStreamer.Domain
             string filePath = null
         );
         void AddNewListenedComposition(Composition composition, User user, Action<string> errorAction = null);
+        Task AddNewListenedCompositionAsync(Composition newC, User user, Action<string> errorAction = null);
 
         /// <returns>Returns false if does not exist.</returns>
         bool ArtistExists(string artistName);
