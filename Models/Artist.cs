@@ -24,7 +24,6 @@ namespace MediaStreamer.Domain
             this.Albums = new HashSet<Album>();
             this.ArtistGenres = new HashSet<ArtistGenre>();
             this.Compositions = new HashSet<Composition>();
-            this.ListenedCompositions = new HashSet<ListenedComposition>();
         }
         public Guid ArtistID { get; set; }
 
@@ -36,7 +35,6 @@ namespace MediaStreamer.Domain
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<ArtistGenre> ArtistGenres { get; set; }
         public virtual ICollection<Composition> Compositions { get; set; }
-        public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
 
         public override string GetID()
         {

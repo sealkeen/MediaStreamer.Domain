@@ -55,6 +55,11 @@ namespace MediaStreamer.Domain
         [MaxLength(512)]
 #endif
         public string Bio { get; set; }
+
+#if NETCOREAPP || NET45 || NETSTANDARD
+        [MaxLength(450)]
+#endif
+        public string AspNetUserId { get; set; }
     
         public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
     }

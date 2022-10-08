@@ -41,7 +41,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\LinqExtensions\LinqExtensions.csproj" />
+	  <ProjectReference Include="..\Sealkeen.Linq.Extensions\Sealkeen.Linq.Extensions.csproj" />
 	  <ProjectReference Include="..\MediaStreamer.Logging\MediaStreamer.Logging.csproj" />
 	  <ProjectReference Include="..\Sealkeen.Abstractions\Sealkeen.Abstractions.csproj" />
 	  <ProjectReference Include="..\StringExtensions\StringExtensions.csproj" />

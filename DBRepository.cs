@@ -20,6 +20,14 @@ namespace MediaStreamer.Domain
             return _instance;
         }
 
+        public static IDBRepository GetInstance(IDMDBContext context)
+        {
+            if (_instance == null)
+                _instance = new DBRepository();
+            _instance.DB = context;
+            return _instance;
+        }
+
         public IDMDBContext DB { get; set; }
 
         //private Task<IDBRepository> _loadingTask;
@@ -166,41 +174,49 @@ namespace MediaStreamer.Domain
         public Album AddAlbum(
             Artist artist, Genre genre, string albumFromFile,
             string label = null, 
-            string type = null, long? year = null)
+            string type = null, long? year = null,
+            Action<string> errorAction = null)
         {
-            Album albumToAdd;
+            try {
+                Album albumToAdd;
 
-            if (albumFromFile == null || albumFromFile == string.Empty) 
-            {
-                // album tag/name is not recognized
-                return AddNewUnknownAlbumToExistingArtistAndGenre(artist, genre, label, type, year);
-            } else {
-                // album tag/name is recognized 
-                var foundAlbum = GetFirstAlbumIfExists(artist.ArtistName, albumFromFile);
-                if ((foundAlbum == null))
+                if (albumFromFile == null || albumFromFile == string.Empty) 
                 {
-                    // the album is new
-                    albumToAdd = new Album()
-                    { //ArtistName = artistFileName,
-                        Artist = artist, AlbumName = albumFromFile,
-                        Genre = genre,
-                        GenreID = genre.GenreID,
-                        ArtistID = (artist.ArtistID), AlbumID = GetNewAlbumID()
-                    };
-                    try {
-                        DB.AddEntity(albumToAdd);
-                        DB.SaveChanges();
-                    } catch (Exception ex) {
-                        Debug.WriteLine(ex.Message);
+                    // album tag/name is not recognized
+                    return AddNewUnknownAlbumToExistingArtistAndGenre(artist, genre, label, type, year);
+                } else {
+                    // album tag/name is recognized 
+                    var foundAlbum = GetFirstAlbumIfExists(artist.ArtistName, albumFromFile);
+                    if ((foundAlbum == null))
+                    {
+                        // the album is new
+                        albumToAdd = new Album()
+                        { //ArtistName = artistFileName,
+                            Artist = artist, AlbumName = albumFromFile,
+                            Genre = genre,
+                            GenreID = genre.GenreID,
+                            ArtistID = (artist.ArtistID), AlbumID = GetNewAlbumID()
+                        };
+                        try {
+                            DB.AddEntity(albumToAdd);
+                            DB.SaveChanges();
+                        } catch (Exception ex) {
+                            Debug.WriteLine(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        // album is found in DB
+                        albumToAdd = foundAlbum;
                     }
                 }
-                else
-                {
-                    // album is found in DB
-                    albumToAdd = foundAlbum;
-                }
+                return albumToAdd;
             }
-            return albumToAdd;
+            catch (Exception ex)
+            {
+                errorAction?.Invoke("AddAlbumGenre: " + ex.ToString() + ex.Message);
+                return null;
+            }
         }
 
         public Album AddAlbum(
@@ -271,21 +287,28 @@ namespace MediaStreamer.Domain
             return newAlbum;
         }
 
-        public AlbumGenre AddAlbumGenre(Artist artist, Album album, Genre genre)
+        public AlbumGenre AddAlbumGenre(Artist artist, Album album, Genre genre,
+            Action<string> errorAction = null)
         {
-            var ag = GetFirstAlbumGenreIfExists(artist, album);
-
-            var albG = new AlbumGenre()
+            try
             {
-                AlbumID = album.AlbumID,
-                GenreID = genre.GenreID
-            };
+                var ag = GetFirstAlbumGenreIfExists(artist, album);
 
-            if (album.AlbumGenres == null)
-                album.AlbumGenres = new HashSet<AlbumGenre>();
-            DB.AddEntity(albG);
-            DB.UpdateAndSaveChanges(album);
-            return albG;
+                var albG = new AlbumGenre()
+                {
+                    AlbumID = album.AlbumID,
+                    GenreID = genre.GenreID
+                };
+
+                if (album.AlbumGenres == null)
+                    album.AlbumGenres = new HashSet<AlbumGenre>();
+                DB.AddEntity(albG);
+                DB.UpdateAndSaveChanges(album);
+                return albG;
+            } catch (Exception ex) {
+                errorAction?.Invoke("AddAlbumGenre: " + ex.ToString() + ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -530,14 +553,18 @@ namespace MediaStreamer.Domain
                     return null;
                 }
 
-                var newAGenre = new ArtistGenre() { GenreName = genreName };
+                var newAGenre = new ArtistGenre();
                 firstArtist = DB.GetArtists().FirstOrDefault(x => x.ArtistID == firstArtist.ArtistID);
+                newAGenre.Artist = firstArtist;
+                newAGenre.ArtistID = firstArtist.ArtistID;
                 //todo: check for changes
                 //newAGenre.Genre = DB.Genres.Find(genreName);
                 newAGenre.Genre = GetFirstGenreIfExists(genreName);
 
                 if (newAGenre.Genre == null)
                     newAGenre.Genre = new Genre { GenreName = genreName };
+                else
+                    newAGenre.GenreID = newAGenre.GenreID;
 
                 //GetFirstArtistIfExists(firstArtist.ArtistName).ArtistGenres.Add(newAGenre);
                 DB.AddEntity(newAGenre); 
@@ -553,7 +580,10 @@ namespace MediaStreamer.Domain
 
         public bool ArtistHasGenre(Artist artist, string possibleGenre)
         {
-            var genres = from gen in artist.ArtistGenres where gen.GenreName == possibleGenre select gen;
+            var genres = from aGen in artist.ArtistGenres
+                         join gen in DB.GetGenres() on aGen.GenreID equals gen.GenreID
+                         where gen.GenreName == possibleGenre 
+                         select gen;
 
             if (genres.Count() == 0)
                 return false;
@@ -629,8 +659,9 @@ namespace MediaStreamer.Domain
         public ArtistGenre FindArtistGenreOrReturnNull(Guid artistID, string genreName)
         {
             var query = from ag in DB.GetArtistGenres()
+                        join gen in DB.GetGenres() on ag.GenreID equals gen.GenreID
                         where ag.ArtistID == artistID &&
-                        ag.GenreName == genreName
+                        gen.GenreName == genreName
                         select ag;
             if (query.Any())
                 return query.FirstOrDefault();
@@ -670,9 +701,9 @@ namespace MediaStreamer.Domain
                 {
                     Artist = artist,
                     ArtistID = artist.ArtistID,
-                    DateOfApplication = DateTime.Now,
+                    //DateOfApplication = DateTime.Now,
                     Genre = genre,
-                    GenreName = genre.GenreName,
+                    //GenreName = genre.GenreName,
                     GenreID = genre.GenreID
                 };
 
@@ -881,19 +912,11 @@ namespace MediaStreamer.Domain
             try
             {
                 var existingComps = (
-                    from lc in DB.GetListenedCompositions()
-                    join c in DB.GetCompositions()
-                        on lc.CompositionID equals c.CompositionID
-                    join u in DB.GetUsers()
-                        on lc.UserID equals u.UserID
-                    where
+                    from lc in DB.GetListenedCompositions() where
                         lc.UserID == user.UserID &&
-                        c.CompositionName == newC.CompositionName &&
-                        c.AlbumID == newC.AlbumID &&
-                        c.ArtistID == newC.ArtistID
+                        lc.CompositionID == newC.CompositionID
                     select lc
-
-                    )
+                    ).OrderBy(c => c.CompositionID)
                 ;
                 if (existingComps != null &&
                     existingComps.Any())
@@ -901,7 +924,8 @@ namespace MediaStreamer.Domain
                     var last = existingComps.FirstOrDefault();
                     last.CountOfPlays += 1;
                     last.ListenDate = DateTime.Now;
-                    DB.SaveChanges();
+
+                    DB.UpdateAndSaveChanges(last);
                     return;
                 }
                 /*public long*/
@@ -910,7 +934,6 @@ namespace MediaStreamer.Domain
                 var CompositionID = newC.CompositionID;
                 var lC = new ListenedComposition()
                 {
-                    ListenedCompositionID = Guid.NewGuid(),
                     ListenDate = DateTime.Now,
                     CompositionID = newC.CompositionID,
                     CountOfPlays = 1,
@@ -996,7 +1019,7 @@ namespace MediaStreamer.Domain
 
         public User AddNewUser(string login, string psswd,
             string email, string bio,
-            string VKLink = "null", string FaceBookLink = "null",
+            string externalAccoountId = "null", string FaceBookLink = "null",
             Action<string> errorAction = null)
         {
             DateTime lastListenedDataModificationDate = DateTime.MinValue;
@@ -1006,18 +1029,16 @@ namespace MediaStreamer.Domain
             {
                 var user = new User();
                 Guid id = Guid.NewGuid();
-
+                user.UserID = id;
                 user.UserName = login;
                 user.Email = email;
                 user.Password = ToMD5(psswd);
                 user.DateOfSignUp = DateTime.Now;
                 user.Bio = bio;
 
-                user.VKLink = "null";
-                user.FaceBookLink = "null";
-                user.UserID = id;
+                user.AspNetUserId = externalAccoountId;
 
-                DB.AddEntity(user);
+                DB.Add(user);
                 DB.SaveChanges();
                 return user;
             }

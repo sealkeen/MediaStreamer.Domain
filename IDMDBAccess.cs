@@ -36,7 +36,8 @@ namespace MediaStreamer.Domain
         /// <returns>Returns null if not successful.</returns>
         Album AddAlbum(
             Artist artist, Genre genre, string albumFromFile,
-            string label = null, string type = null, long? year = null);
+            string label = null, string type = null, long? year = null,
+            Action<string> errorAction = null);
 
         /// <summary>
         /// This method changes the existing composition
@@ -98,7 +99,7 @@ namespace MediaStreamer.Domain
         bool HasModerRights(User user, Action<string> errorAction = null);
         User AddNewUser(string login, string psswd,
             string email, string bio,
-            string VKLink = "null", string FaceBookLink = "null", Action<string> errorAction = null);
+            string externalAccountId = "null", string FaceBookLink = "null", Action<string> errorAction = null);
 
         Moderator AddNewModerator(Guid userID, Action<string> errorAction = null);
 

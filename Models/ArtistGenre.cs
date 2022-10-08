@@ -20,12 +20,6 @@ namespace MediaStreamer.Domain
         public Guid ArtistID { get; set; }
         public Guid GenreID { get; set; }
 
-#if NETCOREAPP || NET45 || NETSTANDARD
-        [StringLength(256)]
-#endif
-        public string GenreName { get; set; }
-        public Nullable<System.DateTime> DateOfApplication { get; set; }
-    
         public virtual Artist Artist { get; set; }
         public virtual Genre Genre { get; set; }
     }

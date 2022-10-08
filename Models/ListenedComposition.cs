@@ -21,7 +21,6 @@ namespace MediaStreamer.Domain
             CompositionID = Guid.Empty;
         }
 
-        public Guid ListenedCompositionID { get; set; }
         public System.DateTime ListenDate { get; set; }
         public Nullable<long> CountOfPlays { get; set; }
         public Guid UserID { get; set; }
