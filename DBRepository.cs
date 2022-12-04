@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MediaStreamer.Domain
 {
-    public class DBRepository : IDBRepository
+    public class DBRepository : IPagedDBRepository
     {
         private static DBRepository _instance;
-        public static async Task<IDBRepository> GetInstanceAsync(IDMDBContext context)
+        public static async Task<IDBRepository> GetInstanceAsync(IPagedDMDBContext context)
         {
             if (_instance == null)
                 _instance = new DBRepository();
@@ -20,7 +20,7 @@ namespace MediaStreamer.Domain
             return _instance;
         }
 
-        public static IDBRepository GetInstance(IDMDBContext context)
+        public static IDBRepository GetInstance(IPagedDMDBContext context)
         {
             if (_instance == null)
                 _instance = new DBRepository();
@@ -28,7 +28,7 @@ namespace MediaStreamer.Domain
             return _instance;
         }
 
-        public IDMDBContext DB { get; set; }
+        public IPagedDMDBContext DB { get; set; }
 
         //private Task<IDBRepository> _loadingTask;
         //public Task<IDBRepository> LoadingTask { get { return _loadingTask; } set { _loadingTask = value; } }
@@ -590,7 +590,7 @@ namespace MediaStreamer.Domain
             return true;
         }
 
-        public void Update<TDBContext>() where TDBContext : IDMDBContext, new()
+        public void Update<TDBContext>() where TDBContext : IPagedDMDBContext, new()
         {
             if (DB == null)
             {
@@ -1208,6 +1208,7 @@ namespace MediaStreamer.Domain
         {
             return from comp in DB.GetListenedCompositions()
                    where comp.UserID == user.UserID
+                   orderby comp.CountOfPlays descending
                    select comp;
         }
 

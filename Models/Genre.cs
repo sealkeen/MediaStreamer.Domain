@@ -9,6 +9,7 @@
 
 namespace MediaStreamer.Domain
 {
+    using MediaStreamer.Domain.Models;
     using System;
     using System.Collections.Generic;
 #if NETCOREAPP || NET45 || NETSTANDARD
@@ -29,6 +30,8 @@ namespace MediaStreamer.Domain
         [StringLength(256)]
 #endif
         public string GenreName { get; set; }
+        public Guid? StyleId { get; set; }
+        public Style Style { get; set; }
     
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }

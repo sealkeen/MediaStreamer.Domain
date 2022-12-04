@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using MediaStreamer.Domain.Models;
 
 namespace MediaStreamer.Domain
 {
@@ -23,28 +23,26 @@ namespace MediaStreamer.Domain
         IQueryable<Artist> GetArtists();
         IQueryable<ArtistGenre> GetArtistGenres();
         IQueryable<Composition> GetCompositions();
-        IQueryable<IComposition> GetICompositions();
-        IQueryable<CompositionVideo> GetCompositionVideos();
         IQueryable<Genre> GetGenres();
+        IQueryable<IComposition> GetICompositions();
         IQueryable<ListenedComposition> GetListenedCompositions();
         IQueryable<Moderator> GetModerators();
         IQueryable<Picture> GetPictures();
+        IQueryable<Style> GetStyles();
         IQueryable<User> GetUsers();
-        IQueryable<Video> GetVideos();
         Task<List<Composition>> GetCompositionsAsync();
         Task<List<IComposition>> GetICompositionsAsync();
+        void Add(Administrator administrator);
+        void Add(Album administrator);
+        void Add(AlbumGenre albumGenre);
+        void Add(Artist artist);
         void Add(ArtistGenre artistGenre);
         void Add(Composition composition);
-        void Add(CompositionVideo compositionVideo);
         void Add(Genre genre);
         void Add(ListenedComposition listenedComposition);
         void Add(Moderator moderator);
         void Add(Picture picture);
+        void Add(Style style);
         void Add(User user);
-        void Add(Video video);
-        void Add(Artist artist);
-        void Add(AlbumGenre albumGenre);
-        void Add(Album administrator);
-        void Add(Administrator administrator);
     }
 }
