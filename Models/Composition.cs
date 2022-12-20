@@ -60,11 +60,11 @@ namespace MediaStreamer.Domain
 
         public override string GetID()
         {
-            return CompositionID.ToString();
+            return CompositionID.ToString() ?? Guid.Empty.ToString();
         }
         public override string GetTitle()
         {
-            return Artist.ArtistName;
+            return Artist?.ArtistName ?? "CompositionTitle";
         }
 
         public override string GetDescription()
