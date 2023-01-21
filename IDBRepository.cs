@@ -78,8 +78,6 @@ namespace MediaStreamer.Domain
         IQueryable<Album> GetPossibleAlbums(Guid artistID, string albumName);
         IQueryable<Album> GetPossibleAlbums(string artistName, string albumName);
 
-        bool ContainsArtist(string artistName, List<Artist> artists);
-
         bool ArtistHasGenre(Artist artist, string possibleGenre);
 
         //void Update<TDBContext>() where TDBContext : IDMDBContext, new();

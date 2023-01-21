@@ -6,6 +6,28 @@ namespace MediaStreamer.Domain
 {
     public partial class DBRepository
     {
+        public IQueryable<Album> GetPossibleAlbums(string artistName, string albumName)
+        {
+            var result = from album in DB.GetAlbums()
+                         join artist in DB.GetArtists()
+                        on album.ArtistID equals artist.ArtistID
+                         where ((artist.ArtistName == artistName) &&
+                     (album.AlbumName == albumName))
+                         select album;
+
+            return result;
+        }
+
+        public IQueryable<Album> GetPossibleAlbums(Guid artistID, string albumName)
+        {
+            var matches = from match in DB.GetAlbums()
+                          where (match.AlbumName == albumName &&
+                          match.ArtistID == artistID)
+                          select match;
+
+            return matches;
+        }
+
         /// <summary> Returns null if does not exist. </summary>
         /// <param name="artistName">Possible artist name.</param>
         /// <param name="albumName">Possible album name.</param>
@@ -154,6 +176,36 @@ namespace MediaStreamer.Domain
         public Guid GetNewAlbumID()
         {
             return Guid.NewGuid();
+        }
+
+        public bool DeleteAlbum(Album album, Action<string> errorAction = null)
+        {
+            try
+            {
+                if (DB != null) DB.RemoveEntity(DB.GetAlbums().FirstOrDefault(x => x.AlbumID == album.AlbumID));
+                if (DB != null) DB.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (errorAction != null) errorAction.Invoke(ex.Message);
+                return false;
+            }
+        }
+
+        public bool DeleteAlbum(Guid ID, Action<string> errorAction = null)
+        {
+            try
+            {
+                DB.RemoveEntity(DB.GetAlbums().FirstOrDefault(x => x.AlbumID == ID));
+                if (DB != null) DB.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (errorAction != null) errorAction.Invoke(ex.Message);
+                return false;
+            }
         }
     }
 }

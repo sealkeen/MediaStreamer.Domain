@@ -46,4 +46,8 @@
 	  <ProjectReference Include="..\Sealkeen.Abstractions\Sealkeen.Abstractions.csproj" />
 	  <ProjectReference Include="..\StringExtensions\StringExtensions.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="RepositoryTypes\" />
+	</ItemGroup>
 </Project>
