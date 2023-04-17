@@ -8,7 +8,7 @@ namespace MediaStreamer.Domain
     // As a column data template
     public abstract class MediaEntity
     {
-        public abstract string GetID();
+        public abstract string GetId();
         public abstract bool IsValid();
         public virtual string GetTitle() { return "MediaEntity"; }
         public virtual string GetDescription() { return "Description"; }

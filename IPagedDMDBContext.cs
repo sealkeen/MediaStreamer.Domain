@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,5 +11,6 @@ namespace MediaStreamer.Domain
     {
         Task<List<Composition>> GetCompositionsAsync(int skip, int take);
         Task<List<IComposition>> GetICompositionsAsync(int skip, int take);
+        IQueryable<ListenedComposition> GetListenedCompositions(bool includeCompositions);
     }
 }

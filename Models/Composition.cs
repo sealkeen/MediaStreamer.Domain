@@ -58,7 +58,7 @@ namespace MediaStreamer.Domain
         public virtual ICollection<CompositionVideo> CompositionVideos { get; set; }
         public virtual ICollection<ListenedComposition> ListenedCompositions { get; set; }
 
-        public override string GetID()
+        public override string GetId()
         {
             return CompositionID.ToString() ?? Guid.Empty.ToString();
         }

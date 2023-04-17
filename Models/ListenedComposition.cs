@@ -12,7 +12,7 @@ namespace MediaStreamer.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class ListenedComposition : ICompositionInstance
+    public partial class ListenedComposition : MediaEntity, ICompositionInstance
     {
         public ListenedComposition()
         {
@@ -36,6 +36,16 @@ namespace MediaStreamer.Domain
         public Composition GetInstance()
         {
             return Composition;
+        }
+
+        public override string GetId()
+        {
+            return UserID.ToString() + "," + CompositionID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return CompositionID != Guid.Empty;
         }
     }
 }
