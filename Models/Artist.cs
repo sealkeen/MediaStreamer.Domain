@@ -36,7 +36,7 @@ namespace MediaStreamer.Domain
         public virtual ICollection<ArtistGenre> ArtistGenres { get; set; }
         public virtual ICollection<Composition> Compositions { get; set; }
 
-        public override string GetID()
+        public override string GetId()
         {
             return ArtistID.ToString();
         }
@@ -54,7 +54,7 @@ namespace MediaStreamer.Domain
         }
         public override bool IsValid()
         {
-            return true;
+            return ArtistID != Guid.Empty;
         }
     }
 }

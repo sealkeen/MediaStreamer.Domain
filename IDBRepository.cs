@@ -10,12 +10,7 @@ namespace MediaStreamer.Domain
     {
         IPagedDMDBContext DB { get; set; }
         void OnStartup();
-        Guid GetNewCompositionID();
-        Guid GetNewArtistID();
-        Guid GetNewAlbumID();
-        Guid GetNewModeratorID();
-        Guid GetNewAdministratorID();
-        void PopulateDataBase(Action<string> errorAction = null);
+        Guid GetNewCompositionID(); Guid GetNewArtistID(); Guid GetNewAlbumID(); Guid GetNewModeratorID(); Guid GetNewAdministratorID();
 
         /// <returns>Returns null if not successful.</returns>
         Album AddAlbum( string artistName, string albumName,

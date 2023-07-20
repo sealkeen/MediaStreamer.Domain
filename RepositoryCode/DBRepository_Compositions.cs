@@ -8,6 +8,9 @@ namespace MediaStreamer.Domain
 {
     public partial class DBRepository
     {
+        /// <summary> This method merges </summary>
+        /// <param name="existingComp">The composition from the database</param>
+        /// <param name="comp">Newly created composition</param>
         public void CopyFieldsExceptForDurationAndPath(Composition existingComp, Composition comp)
         {
             comp.About = existingComp.About; comp.Album = existingComp.Album;
@@ -15,9 +18,7 @@ namespace MediaStreamer.Domain
             comp.ArtistID = existingComp.ArtistID; comp.CompositionName = existingComp.CompositionName;
         }
 
-        /// <summary>
-        /// This method changes the existing composition if it exists
-        /// </summary>
+        /// <summary> This method changes the existing composition if it exists </summary>
         public Composition AddComposition(Artist artist, Album album,
             string title, TimeSpan duration,
             string fileName, long? yearFromFile = null,
@@ -43,40 +44,31 @@ namespace MediaStreamer.Domain
                     return existingComp;
                 }
 
-                if (title != null)
+                if (title == null)
                 {
-                    try
-                    {
-                        newComposition.CompositionID = GetNewCompositionID();
-                        newComposition.CompositionName = title;
-                        newComposition.ArtistID = artist?.ArtistID;
-                        newComposition.AlbumID = album?.AlbumID;
-                        newComposition.Album = album;
-                        newComposition.Artist = artist;
-
-                        try
-                        {
-                            newComposition.Duration = (long?)duration.TotalSeconds;
-                            newComposition.FilePath = fileName;
-                        }
-                        catch
-                        {
-                            //leave them null
-                        }
-
-                        DB.AddEntity(newComposition);
-                        DB.SaveChanges();
-                        return newComposition;
-                    }
-                    catch (Exception ex)
-                    {
-                        if(errorAction != null) errorAction.Invoke(ex.Message);
-                        return null;
-                    }
+                    if (errorAction != null) errorAction.Invoke("title is null");
+                    return null;
                 }
-                else
-                {
-                    if(errorAction != null) errorAction.Invoke("title is null");
+                try {
+                    newComposition.CompositionID = GetNewCompositionID();
+                    newComposition.CompositionName = title;
+                    newComposition.ArtistID = artist?.ArtistID;
+                    newComposition.AlbumID = album?.AlbumID;
+                    newComposition.Album = album;
+                    newComposition.Artist = artist;
+
+                    try {
+                        newComposition.Duration = (long?)duration.TotalSeconds;
+                        newComposition.FilePath = fileName;
+                    } catch {
+                        //leave them null
+                    }
+
+                    DB.AddEntity(newComposition);
+                    DB.SaveChanges();
+                    return newComposition;
+                } catch (Exception ex) {
+                    if(errorAction != null) errorAction.Invoke(ex.Message);
                     return null;
                 }
             }
