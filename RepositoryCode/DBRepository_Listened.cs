@@ -53,44 +53,37 @@ namespace MediaStreamer.Domain
         public void AddNewListenedComposition(Composition newC, User user,
             Action<string> errorAction = null)
         {
-            try
+            var existingComps = (
+                from lc in DB.GetListenedCompositions() where
+                    lc.UserID == user.UserID &&
+                    lc.CompositionID == newC.CompositionID
+                select lc
+                ).OrderBy(c => c.CompositionID)
+            ;
+            if (existingComps != null &&
+                existingComps.Any())
             {
-                var existingComps = (
-                    from lc in DB.GetListenedCompositions() where
-                        lc.UserID == user.UserID &&
-                        lc.CompositionID == newC.CompositionID
-                    select lc
-                    ).OrderBy(c => c.CompositionID)
-                ;
-                if (existingComps != null &&
-                    existingComps.Any())
-                {
-                    var last = existingComps.FirstOrDefault();
-                    last.CountOfPlays += 1;
-                    last.ListenDate = DateTime.Now;
+                var last = existingComps.FirstOrDefault();
+                last.CountOfPlays += 1;
+                last.ListenDate = DateTime.Now;
 
-                    DB.UpdateAndSaveChanges(last);
-                    return;
-                }
-                /*public long*/
-                var UserID = user.UserID;
-                AddDefaultUserIfNotExists(user);
-                var CompositionID = newC.CompositionID;
-                var lC = new ListenedComposition()
-                {
-                    ListenDate = DateTime.Now,
-                    CompositionID = newC.CompositionID,
-                    CountOfPlays = 1,
-                    UserID = user.UserID
-                };
-
-                DB.AddEntity(lC);
-                DB.SaveChanges();
+                DB.UpdateAndSaveChanges(last);
+                return;
             }
-            catch (Exception ex)
+            /*public long*/
+            var UserID = user.UserID;
+            AddDefaultUserIfNotExists(user);
+            var CompositionID = newC.CompositionID;
+            var lC = new ListenedComposition()
             {
-                if(errorAction != null) errorAction.Invoke(ex.Message);
-            }
+                ListenDate = DateTime.Now,
+                CompositionID = newC.CompositionID,
+                CountOfPlays = 1,
+                UserID = user.UserID
+            };
+
+            DB.AddEntity(lC);
+            DB.SaveChanges();
         }
 
         public bool ClearListenedCompositions()
