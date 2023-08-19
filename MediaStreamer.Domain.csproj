@@ -2,7 +2,7 @@
 
 <!--EntityType.csproj-->
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1; netstandard2.1; netstandard2.0; net40; net472</TargetFrameworks>
+		<TargetFrameworks>netcoreapp3.1; netstandard2.1; netstandard2.0</TargetFrameworks>
 		<!--uap10.0.19041; -->
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
