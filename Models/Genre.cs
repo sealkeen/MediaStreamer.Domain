@@ -15,7 +15,7 @@ namespace MediaStreamer.Domain
 #if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
-    public partial class Genre
+    public partial class Genre : MediaEntity
     {
         public Genre()
         {
@@ -36,5 +36,15 @@ namespace MediaStreamer.Domain
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }
         public virtual ICollection<ArtistGenre> ArtistGenres { get; set; }
+
+        public override string GetId()
+        {
+            return GenreID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(GenreName) && GenreName.Length >= 1;
+        }
     }
 }

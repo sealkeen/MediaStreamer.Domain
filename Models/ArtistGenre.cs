@@ -15,12 +15,22 @@ namespace MediaStreamer.Domain
     using System.ComponentModel.DataAnnotations;
 #endif
 
-    public partial class ArtistGenre
+    public partial class ArtistGenre : MediaEntity
     {
         public Guid ArtistID { get; set; }
         public Guid GenreID { get; set; }
 
         public virtual Artist Artist { get; set; }
         public virtual Genre Genre { get; set; }
+
+        public override string GetId()
+        {
+            return ArtistID.ToString() + ","+ GenreID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return !(ArtistID == Guid.Empty) && (GenreID != Guid.Empty);
+        }
     }
 }

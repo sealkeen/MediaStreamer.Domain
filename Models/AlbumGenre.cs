@@ -12,12 +12,22 @@ namespace MediaStreamer.Domain
     using System;
     using System.Collections.Generic;
 
-    public partial class AlbumGenre
+    public partial class AlbumGenre : MediaEntity
     {
         public Guid GenreID { get; set; }
         public Guid AlbumID { get; set; }
     
         public virtual Album Album { get; set; }
         public virtual Genre Genre { get; set; }
+
+        public override string GetId()
+        {
+            return AlbumID.ToString() + "," + GenreID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return !(AlbumID == Guid.Empty) && (GenreID != Guid.Empty);
+        }
     }
 }

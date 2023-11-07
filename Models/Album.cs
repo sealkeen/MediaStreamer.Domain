@@ -14,7 +14,7 @@ namespace MediaStreamer.Domain
 #if NETCOREAPP || NET45 || NETSTANDARD
     using System.ComponentModel.DataAnnotations;
 #endif
-    public partial class Album
+    public partial class Album : MediaEntity
     {
         public Guid AlbumID { get; set; }
 
@@ -41,5 +41,15 @@ namespace MediaStreamer.Domain
         public virtual Artist Artist { get; set; }
         public virtual ICollection<AlbumGenre> AlbumGenres { get; set; }
         public virtual ICollection<Composition> Compositions { get; set; }
+
+        public override string GetId()
+        {
+            return ArtistID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return !string.IsNullOrEmpty(AlbumName) && AlbumName.Length >= 1 && !(ArtistID is null) && (ArtistID != Guid.Empty);
+        }
     }
 }

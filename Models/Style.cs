@@ -13,7 +13,6 @@ namespace MediaStreamer.Domain.Models
 #endif
         public Guid StyleId { get; set; }
 
-
 #if NETCOREAPP || NET45 || NETSTANDARD
         [Required]
         [StringLength(256)]
