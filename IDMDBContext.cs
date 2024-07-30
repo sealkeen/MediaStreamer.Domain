@@ -12,8 +12,8 @@ namespace MediaStreamer.Domain
         void Clear();
         void EnsureCreated();
         int SaveChanges();
-        void AddEntity<T>(T o) where T : class;
-        void RemoveEntity<T>(T o) where T : class;
+        void AddEntity<T>(T o) where T : MediaEntity;
+        void RemoveEntity<T>(T o, bool saveDelayed = false) where T : MediaEntity;
         void UpdateAndSaveChanges<TEntity>(TEntity entity) where TEntity : class;
         bool ClearTable(string tableName);
         string GetContainingFolderPath();

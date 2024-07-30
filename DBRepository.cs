@@ -1,8 +1,4 @@
-﻿using StringExtensions;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,9 +25,6 @@ namespace MediaStreamer.Domain
         }
 
         public IPagedDMDBContext DB { get; set; }
-
-        //private Task<IDBRepository> _loadingTask;
-        //public Task<IDBRepository> LoadingTask { get { return _loadingTask; } set { _loadingTask = value; } }
 
         public void OnStartup()
         {

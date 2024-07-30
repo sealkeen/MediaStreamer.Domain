@@ -12,7 +12,7 @@ namespace MediaStreamer.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class Moderator
+    public partial class Moderator : MediaEntity
     {
         public Moderator()
         {
@@ -22,5 +22,15 @@ namespace MediaStreamer.Domain
         public Guid ModeratorID { get; set; }
         public Nullable<Guid> UserID { get; set; }
         public virtual User User { get; set; }
+
+        public override string GetId()
+        {
+            return ModeratorID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return ModeratorID != Guid.Empty;
+        }
     }
 }

@@ -10,15 +10,24 @@
 namespace MediaStreamer.Domain
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Administrator
+    public partial class Administrator : MediaEntity
     {
         public Guid AdministratorID { get; set; }
         public Nullable<Guid> ModeratorID { get; set; }
         public Nullable<Guid> UserID { get; set; }
-    
+        
         public virtual User User { get; set; }
         public virtual Moderator Moderator { get; set; }
+
+        public override string GetId()
+        {
+            return AdministratorID.ToString();
+        }
+
+        public override bool IsValid()
+        {
+            return AdministratorID != Guid.Empty;
+        }
     }
 }
