@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MediaStreamer.Domain
 {
@@ -20,7 +19,7 @@ namespace MediaStreamer.Domain
             Action<string> errorAction = null);
 
         /// <summary>
-        /// Returns artist name and title from filename or matadata
+        /// Returns artist name and title from filename or metadata
         /// </summary>
         /// <param name="fileName">The file path in file system.</param>
         /// <param name="titleFromMetaD">title in metadata if presetnt</param>
@@ -32,5 +31,14 @@ namespace MediaStreamer.Domain
             string fileName, string titleFromMetaD,
             string artistFromMetaD,
             ref string artistName, ref string compositionName);
+
+        /// <summary>
+        /// Simplier version, accepts fileName, returns artist and title.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="artistName"></param>
+        /// <param name="compositionName"></param>
+        /// <returns></returns>
+        (string Artist, string Title) GetSongArtistAndTitle(string fileName);
     }
 }

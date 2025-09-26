@@ -1,8 +1,10 @@
-﻿using StringExtensions;
+﻿using MediaStreamer.Domain.Enums;
+using StringExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MediaStreamer.Domain
 {
@@ -129,12 +131,6 @@ namespace MediaStreamer.Domain
                 existingComp.Duration = (long?)duration.TotalSeconds;
                 existingComp.FilePath = fileName;
 
-                //todo:
-
-                //existingComp.Duration = (long?)duration.TotalSeconds;
-                //existingComp.FilePath = fileName;
-                //existingComp.CompositionID = GetNewCompositionID();
-                //return existingComp;
                 if (!onlyReturnNoAppend)
                     DB.SaveChanges();
             }
@@ -199,13 +195,20 @@ namespace MediaStreamer.Domain
                 }
             }
             var targetArtist = artistMatches.FirstOrDefault();
-            var alb = new Album() { ArtistID = targetArtist.ArtistID, AlbumName = albumName, };
+            var albums = GetPossibleAlbums(artistName, albumName);
+            Album alb;
+            if (albums != null && albums.Any())
+                alb = albums.First();
+            else { alb = new Album() { ArtistID = targetArtist.ArtistID, AlbumName = albumName, AlbumID = Guid.NewGuid() };
+                alb = AddAlbum(albumName, artistName);
+            };
             var cmp = new Composition()
             {
                 ArtistID = targetArtist.ArtistID,
                 CompositionName = compositionName,
                 Duration = duration,
                 FilePath = filePath,
+                AlbumID = alb?.AlbumID ?? Guid.Empty,
             };
 
             DB.AddEntity(cmp);
@@ -225,6 +228,20 @@ namespace MediaStreamer.Domain
                 if (errorAction != null) errorAction.Invoke(ex.Message);
                 return false;
             }
+        }
+
+        public async Task<EMoveResult> MoveCompositionTo(Guid compositionId, EMoveDirection direction)
+        {
+            var comp = (await DB.GetCompositionsAsync())
+                .Where(c => c.CompositionID == compositionId)
+                .FirstOrDefault();
+
+            if (comp != null)
+                DB.RemoveEntity(comp);
+            DB.UpdateAndSaveChanges(comp);
+            DB.AddEntity(comp);
+
+            return new EMoveResult() { IsSuccess = true };
         }
     }
 }

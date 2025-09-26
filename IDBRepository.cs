@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediaStreamer.Domain.Enums;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,11 @@ namespace MediaStreamer.Domain
     {
         IPagedDMDBContext DB { get; set; }
         void OnStartup();
-        Guid GetNewCompositionID(); Guid GetNewArtistID(); Guid GetNewAlbumID(); Guid GetNewModeratorID(); Guid GetNewAdministratorID();
+        Guid GetNewCompositionID();
+        Guid GetNewArtistID();
+        Guid GetNewAlbumID();
+        Guid GetNewModeratorID();
+        Guid GetNewAdministratorID();
 
         /// <returns>Returns null if not successful.</returns>
         Album AddAlbum( string artistName, string albumName,
@@ -40,6 +45,8 @@ namespace MediaStreamer.Domain
             string title, TimeSpan duration,
             string fileName, long? yearFromFile = null,
             bool onlyReturnNoAppend = false, Action<string> errorAction = null);
+
+        Task<EMoveResult> MoveCompositionTo(Guid compositionId, EMoveDirection direction);
 
         /// <summary>
         /// Bad function, don't use it
