@@ -44,7 +44,7 @@ namespace MediaStreamer.Domain
 
         public override string GetId()
         {
-            return ArtistID.ToString();
+            return AlbumID.ToString();
         }
 
         public override bool IsValid()
