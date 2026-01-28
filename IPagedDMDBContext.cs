@@ -12,5 +12,6 @@ namespace MediaStreamer.Domain
         Task<List<Composition>> GetCompositionsAsync(int skip, int take);
         Task<List<IComposition>> GetICompositionsAsync(int skip, int take);
         IQueryable<ListenedComposition> GetListenedCompositions(bool includeCompositions);
+        int SaveChangesTo(string tableName);
     }
 }
